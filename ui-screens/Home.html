@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TruongAnCao | Nông nghiệp &amp; Dược liệu Tinh khiết</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-container": "#fffbff",
+                        "on-surface": "#171d19",
+                        "tertiary-fixed": "#ffdad7",
+                        "on-primary-container": "#f5fff7",
+                        "surface-dim": "#d5dcd6",
+                        "surface-container": "#e9efe9",
+                        "surface-tint": "#006c4a",
+                        "on-background": "#171d19",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "primary-container": "#00855d",
+                        "surface-container-low": "#eff5ef",
+                        "secondary": "#515f74",
+                        "tertiary-container": "#ba5551",
+                        "on-surface-variant": "#3d4a42",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-tertiary-fixed": "#410004",
+                        "on-secondary": "#ffffff",
+                        "surface-container-highest": "#dee4de",
+                        "tertiary": "#9b3e3b",
+                        "on-secondary-container": "#57657a",
+                        "surface-bright": "#f5fbf5",
+                        "outline": "#6d7a72",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "inverse-primary": "#68dba9",
+                        "on-tertiary": "#ffffff",
+                        "background": "#f5fbf5",
+                        "surface-variant": "#dee4de",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f5fbf5",
+                        "on-error-container": "#93000a",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "primary-fixed": "#85f8c4",
+                        "primary-fixed-dim": "#68dba9",
+                        "inverse-surface": "#2c322e",
+                        "error-container": "#ffdad6",
+                        "surface-container-high": "#e4eae4",
+                        "tertiary-fixed-dim": "#ffb3ae",
+                        "on-tertiary-fixed-variant": "#7f2928",
+                        "on-primary-fixed-variant": "#005137",
+                        "on-primary-fixed": "#002114",
+                        "outline-variant": "#bccac0",
+                        "secondary-container": "#d5e3fc",
+                        "primary": "#006948",
+                        "inverse-on-surface": "#ecf2ec",
+                        "on-error": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "container-max": "1280px",
+                        "margin-desktop": "48px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "section-padding": "80px",
+                        "stack-md": "16px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "display": ["Inter"],
+                        "body-md": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "headline-lg-mobile": ["Inter"],
+                        "headline-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body { font-family: 'Inter', sans-serif; }
+        .cart-open { overflow: hidden; }
+        .glass-nav { background: rgba(245, 251, 245, 0.8); backdrop-filter: blur(12px); }
+    </style>
+</head>
+<body class="bg-background text-on-surface selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top Navigation Bar -->
+<header class="fixed top-0 left-0 right-0 z-50 glass-nav shadow-sm">
+<nav class="flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4">
+<div class="text-headline-md font-headline-md font-bold text-primary">TruongAnCao</div>
+<div class="hidden md:flex items-center space-x-8">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md" href="#">Products</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Our Story</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Wholesale</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors font-body-md" href="#">Contact</a>
+</div>
+<div class="flex items-center gap-4">
+<button class="relative p-2 text-primary active:scale-95 transition-transform" onclick="toggleCart()">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-1 -right-1 bg-primary text-white text-[10px] font-bold w-5 h-5 flex items-center justify-center rounded-full" id="cart-badge">2</span>
+</button>
+</div>
+</nav>
+</header>
+<main class="pt-20">
+<!-- Hero Section -->
+<section class="relative h-[614px] flex items-center overflow-hidden px-margin-mobile md:px-margin-desktop">
+<div class="absolute inset-0 z-0">
+<div class="w-full h-full bg-cover bg-center transition-transform duration-[10s] hover:scale-110" data-alt="A lush, high-resolution close-up of premium medicinal herbs and organic plants growing in a mist-covered highland farm. The lighting is soft morning sun, emphasizing dew drops on emerald green leaves. The overall aesthetic is clinical yet organic, showcasing high-fidelity agricultural science and pure botanical vitality." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBpiPZ6Y-iqpSThnwJMBrjQk8hvPJRo7XevR-RshJJ-WJ88i94SoYGGZLBItmTWMSEnUCggZs6dynu8282gPNRRDCsmvknZV30nCrSNtIiB_6CM5ePJNi1SypKL0atP2eLiKCdO0Phz8Pj1R__WRsKzTDrMvTh_o5TIgnn9X0B4OHQEDDCEE26lXBa8OwZ_76iJUokGxwE53NH_eCg-cHLwSa0hGBz0UFlX_pDseyQcXXGLEfxcGJG7fw')"></div>
+<div class="absolute inset-0 bg-gradient-to-r from-background via-background/40 to-transparent"></div>
+</div>
+<div class="relative z-10 max-w-2xl">
+<h1 class="text-display font-display leading-tight mb-6 text-on-surface">Sản phẩm Nông nghiệp &amp; Dược liệu TruongAnCao</h1>
+<p class="text-body-lg text-on-surface-variant mb-8">Nơi giao thoa giữa truyền thống nông nghiệp và khoa học dược học hiện đại. Cam kết tinh khiết, minh bạch và hiệu quả cao.</p>
+<button class="bg-primary text-on-primary px-8 py-3 rounded-xl font-bold hover:opacity-90 transition-all shadow-md">Khám phá ngay</button>
+</div>
+</section>
+<!-- Filter Bar -->
+<section class="sticky top-[72px] z-40 bg-surface-container-lowest border-b border-outline-variant py-4">
+<div class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop flex flex-wrap items-center gap-4">
+<div class="flex items-center gap-2 bg-surface-container rounded-lg px-4 py-2">
+<span class="text-label-sm">Nguồn gốc:</span>
+<select class="bg-transparent border-none text-label-sm font-semibold focus:ring-0 p-0 pr-6">
+<option>Tất cả</option>
+<option>Việt Nam</option>
+<option>Hàn Quốc</option>
+</select>
+</div>
+<div class="flex items-center gap-2 bg-surface-container rounded-lg px-4 py-2">
+<span class="text-label-sm">Độ tinh khiết:</span>
+<select class="bg-transparent border-none text-label-sm font-semibold focus:ring-0 p-0 pr-6">
+<option>Tất cả</option>
+<option>99% Tinh khiết</option>
+<option>Hữu cơ</option>
+</select>
+</div>
+<div class="h-6 w-px bg-outline-variant mx-2 hidden md:block"></div>
+<div class="flex gap-2 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-primary-container text-on-primary-container text-label-sm">Tất cả mục đích</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant text-label-sm transition-colors">Bồi bổ</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant text-label-sm transition-colors">Làm đẹp</button>
+<button class="whitespace-nowrap px-4 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant text-label-sm transition-colors">Chữa bệnh</button>
+</div>
+</div>
+</section>
+<!-- Product Grid -->
+<section class="py-section-padding max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop">
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter" id="product-grid">
+<!-- Product Card Snippet (Block 2) -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="A premium jar of dried Cordyceps (Đông Trùng Hạ Thảo) presented on a clean white laboratory-style surface with soft emerald lighting. Subtle botanical shadows frame the product, emphasizing organic purity and high-end medicinal quality. Soft, diffused lighting highlights the golden texture of the herbs." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCp9HjyPkhfeF99FnFUbzoYBNvcOGBgE66a1Vq_dABjhO5e08VuVxhMr-j07VveZHRXFza6RtYLRSD_9kTM5_PLQ_x5XngfeCOK92tAkmVlHFNHacvtsBa-DC3ZFE1oXp1C7qoKxKMGjT-1l7sJ5RzqP2grt3ATnO_a5esnw5NQN_Ues6SgC8g66Tao7LnnuqBbRkPS1xHp-D2SdG8iqpwvYVA4d0he13d141IyrOF9f5UfHxnhAclr6A')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Việt Nam</span>
+<span class="px-2 py-1 bg-on-secondary-container/10 backdrop-blur-md text-on-secondary-container text-[10px] font-bold rounded-lg uppercase tracking-wider">Tinh khiết 99%</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Đông Trùng Hạ Thảo</h3>
+<p class="text-label-sm text-secondary mb-4">Bồi bổ sức khỏe, tăng cường hệ miễn dịch</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">500.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Repeat Card 2 -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="High-grade Korean Ginseng (Nhân Sâm Cao Cấp) artistically arranged on a minimalist white ceramic plate. The setting is clean and modern, evoking a high-end apothecary aesthetic. Soft lighting and deep emerald accents create a sense of trust and premium value." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDeefZZn_bFxlQmQNAPLu4yShDp0lrDG50LTBq3h4ffZu4VeNW9B-eNwfo-EuvqSMnCCmxpsQRfxhNUl-Ux6hdXL9aXDciHQuLVBMwRxoqCkImUkE2wEbTsko5lJRwZXZkIhufas5c2kI4LyamcJ4d-TsQhFBbYmWenvKlexdD46U2n5PK1Y79DfkE7E64RY-WBaMorBinv1bmHX6zbM-5akL-jtLfma1oKNkmqkWRP171DDqFX_Tojyg')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Hàn Quốc</span>
+<span class="px-2 py-1 bg-on-secondary-container/10 backdrop-blur-md text-on-secondary-container text-[10px] font-bold rounded-lg uppercase tracking-wider">Hạng Nhất</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Nhân Sâm Cao Cấp</h3>
+<p class="text-label-sm text-secondary mb-4">Tăng cường trí nhớ và sinh lực</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">1.200.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Repeat Card 3 -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Organic Lingzhi mushroom slices beautifully displayed against a minimalist white background. The composition uses generous whitespace and a clean, clinical aesthetic. Subtle green lighting highlights the natural textures of the medicinal fungi." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBBPyb6hN1As8sJwLkJQlpTel25LzKMOYTyzkpldqtDNUF5ScocoLncAh0LFC7-m_-oCR59xrqYRrEVpJGjSCFcmP9j-K9zPsubpx4YcnRI6GTpji-dgQgEUZfRbpBDZxO3GWGDC7OOUzlC6brJ2w_B_LYmNsAOfN-TI4kAvyK60n8AwQD25Gsr7UclSMnXj75ObCesOm5tEQ1IWTBcTjcUKdbl-Gro8MGq3Vg0zqOzPPrGnPxgGUkgEA')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Việt Nam</span>
+<span class="px-2 py-1 bg-on-secondary-container/10 backdrop-blur-md text-on-secondary-container text-[10px] font-bold rounded-lg uppercase tracking-wider">Hữu Cơ</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Nấm Linh Chi Đỏ</h3>
+<p class="text-label-sm text-secondary mb-4">Giải độc gan, hỗ trợ giấc ngủ</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">850.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Repeat Card 4 -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Pure honey infused with Saffron threads in a glass jar. The lighting is golden and warm, contrasting with the clean white minimalist backdrop. A modern agricultural-science aesthetic that emphasizes natural purity and premium wellness." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZPmLZoRf9OzJ3WALFqbSEZZ26Eiebcg5UNLYHVHKxj8wiatwcSwAFdVUtDvstvW6BrHE7KXAwLohy7MX93repL0se0V70N0wawkLhyxhpfy-Cu-LEfmJM8s0TLOo-vDFGRNEvUPZRJP9VYyvr5WXF1zdecQneFmZaPQElVlvpWPTuOTQfSICQWA3w1g2recCiMOqSxNhYoKih2hFY9HNCncHLnmgTO5c5YiJwibXWw6PgtzP6NBying')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Tây Tạng</span>
+<span class="px-2 py-1 bg-on-secondary-container/10 backdrop-blur-md text-on-secondary-container text-[10px] font-bold rounded-lg uppercase tracking-wider">Nguyên Chất</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Saffron Ngâm Mật Ong</h3>
+<p class="text-label-sm text-secondary mb-4">Làm đẹp da, cân bằng nội tiết</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">450.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Extra cards to fill grid -->
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="A premium collection of organic herbal tea blends in minimalist eco-friendly packaging. The aesthetic is modern corporate agricultural, with soft emerald and white tones. The lighting is high-key and breathable, emphasizing the natural ingredients." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCmmm_25ZUkAjt3yYOfrOJ8Ir_DEHZbk2ayPUqAXl5mUWMG6KLxb0quaOJZE4hrAtI-ZITc1QI4y7lxdpuqvTDclzN2ip9jCmMPhlNeR-O8UY3dW4-hfz4bLn2WqTJybOPJjOaGwR_qcnAzgFRnhkHSKyZL5rOtWztGnAfxekrR-r0xDpq3HdCXMQLeZrBhVm369QEcQBM3uQa7Dr-mEqvUTybK4vSYjMblwz5E0CcRmjWxW6QL1IKTUg')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Việt Nam</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Trà Thảo Mộc Mix</h3>
+<p class="text-label-sm text-secondary mb-4">Thanh nhiệt, giải độc cơ thể</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">150.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Finely ground organic Turmeric powder in a designer ceramic bowl. The lighting is crisp and modern, highlighting the vibrant orange color against a pristine white background. A professional pharmaceutical-meets-organic visual style." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBQhPMih0A76Jt5ZM8ZSsbmRcwxGBU0iJZZ-zkwdOaSXKh1dCXZKgSwB_S6SkA0NrY6B4Oo-SMfpsWe8og7kjRIGwxhjBfhp7JjKwYwUNJ-6qTl35Mby4FisOhwEbDIx5iOG26m2rWWzrUBcqgS_NmIyranISWpF_Oy_f2NNA97p0YwdBsDiGayx68pZ0011yVvkap46iGfM02riatHi0NSoftVs2J9AjbT8sfqLraaVnzxZ9Cm3vHZbA')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Nghệ An</span>
+<span class="px-2 py-1 bg-on-secondary-container/10 backdrop-blur-md text-on-secondary-container text-[10px] font-bold rounded-lg uppercase tracking-wider">Nano Curcumin</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Tinh Bột Nghệ Nano</h3>
+<p class="text-label-sm text-secondary mb-4">Hỗ trợ tiêu hóa, làm lành vết thương</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">220.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="High-quality dried jujube fruits in a modern glass container. The composition is clean and minimalist, following a 12-column grid layout for a premium editorial look. Soft ambient shadows and emerald accents define the brand identity." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAKt0kEAtqXCp7GSLgm3rnAu_xkhkS8fVEeQ7sMVcVVLt1gmyD21b62pE0nhPvTOnnyfFtPtbjcjQ_b8peFJ-hd-2SlvE3lcBf2gE3XwVOYUD_JR7M2EcJwZsw327nfXj2kQyVynRV59Grj7g_RscdLbGU0FViUlaCg723es4PUVhPu9syPABq1_rWrzgd4hA_OQ9t_4yiVFvjXU9LsoQ5yJrgaeeIWYN2pVyK5M4tet22yKmpW3eL7bA')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Tân Cương</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Táo Đỏ Hữu Cơ</h3>
+<p class="text-label-sm text-secondary mb-4">Bổ khí huyết, an thần</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">180.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl border border-slate-100 shadow-sm hover:shadow-md transition-all group overflow-hidden">
+<div class="relative aspect-[4/3] overflow-hidden">
+<div class="w-full h-full bg-cover bg-center group-hover:scale-110 transition-transform duration-500" data-alt="Premium bird's nest (Yến Sào) beautifully packaged in a gift set. The design is luxurious and minimalist, using off-white tones and emerald green accents to suggest purity and vitality. High-fidelity photography frames the product center-stage." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA77ZQXrZdBM4dKEZYB9yV4rcYXrJ8VPAQxqb14OXZvbeM6zhLhGoCKsGob863ZmotQOREkScVizoJbk57O9YzCUintpCNSG8SYO-eN4Yb0W3cMzj8shRL9PyJLKesjo6GSVOhFkGlqDGifjwkdlZl4oTwxuq0qXEO_LUwF5DL8YEc2JlOkcevdH9h3W3q4c7EzYrEraJ2EHDxCr6aAFMVH-38e3EKgJCHbQC0kQpsyBWaaJ_0NT9vXyg')"></div>
+<div class="absolute top-3 left-3 flex gap-2">
+<span class="px-2 py-1 bg-primary/10 backdrop-blur-md text-primary text-[10px] font-bold rounded-lg uppercase tracking-wider">Nha Trang</span>
+</div>
+</div>
+<div class="p-5">
+<h3 class="font-headline-md text-on-surface mb-1 truncate">Yến Sào Khánh Hòa</h3>
+<p class="text-label-sm text-secondary mb-4">Bồi bổ ngũ tạng, hồi phục sức khỏe</p>
+<div class="flex items-center justify-between">
+<span class="text-headline-md font-bold text-primary">3.500.000đ</span>
+<button class="bg-primary hover:bg-primary-container text-white p-2 rounded-xl transition-colors" onclick="console.log('addToCart')">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Hidden) -->
+<div class="hidden py-24 flex flex-col items-center justify-center text-center" id="empty-results">
+<span class="material-symbols-outlined text-6xl text-outline-variant mb-4">search_off</span>
+<h3 class="text-headline-md font-bold text-on-surface">Không tìm thấy sản phẩm</h3>
+<p class="text-body-md text-on-surface-variant max-w-sm">Chúng tôi không tìm thấy kết quả nào phù hợp với bộ lọc của bạn. Thử thay đổi các tùy chọn tìm kiếm.</p>
+<button class="mt-6 text-primary font-bold underline">Xóa tất cả bộ lọc</button>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container py-section-padding px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-1">
+<div class="text-headline-md font-headline-md font-bold text-primary mb-4">TruongAnCao</div>
+<p class="text-body-md text-on-surface-variant">© 2024 TruongAnCao. Pure agricultural science.</p>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-4">Sản phẩm</h4>
+<ul class="space-y-2">
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Dược liệu quý</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Trà thảo mộc</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Thực phẩm chức năng</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-4">Chính sách</h4>
+<ul class="space-y-2">
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Shipping Info</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold text-on-surface mb-4">Hỗ trợ</h4>
+<ul class="space-y-2">
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Contact Us</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Return Policy</a></li>
+<li><a class="text-label-sm text-on-surface-variant hover:text-primary transition-colors" href="#">Help Center</a></li>
+</ul>
+</div>
+</footer>
+<!-- BLOCK 1: CartDrawerIsland (Global Cart Drawer) -->
+<div class="fixed inset-0 z-[100] bg-black/40 backdrop-blur-sm transition-opacity hidden" id="cart-drawer-overlay" onclick="if(event.target === this) toggleCart()">
+<div class="absolute right-0 top-0 h-full w-full md:w-[450px] bg-white shadow-2xl flex flex-col animate-slide-in">
+<!-- Header -->
+<div class="flex items-center justify-between p-6 border-b border-outline-variant">
+<h2 class="text-headline-md font-bold text-on-surface">Giỏ hàng của bạn</h2>
+<button class="p-2 hover:bg-surface-variant rounded-full transition-colors" onclick="toggleCart()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<!-- Content (Scrollable) -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6" id="cart-content">
+<!-- Mock Item 1 -->
+<div class="flex gap-4 items-start pb-6 border-b border-surface-container">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="Close up of a premium cordyceps product in a glass jar, clinical lighting, white background." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAdCjurSy7PpiikZNWobo2pQESahJbXhtLPaliuoTOa8sK8O0hbb2wmb8uLLIAzmzgLQW0bs486nSlspj_zN8Hl7AfyoscejGf7bUF6LIhe0ykWreVDEcnK6TZxDaHZK-MWxfTtAu1bnfWVtOnykG13Fq5k7DNGVFLnqNqC3fJoGa07y3Lj9y4TJUciyeoyjBM5vx13jI1OtizsWrOxwyP4egmH4iAhZOQTmQMvJvLosNanvjAmzJXrCQ')"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<h4 class="font-bold text-on-surface">Đông Trùng Hạ Thảo</h4>
+<button class="text-error text-label-sm hover:underline">Xóa</button>
+</div>
+<p class="text-primary font-bold mb-3">500.000đ</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded-full hover:bg-surface-variant">-</button>
+<span class="font-bold">1</span>
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded-full hover:bg-surface-variant">+</button>
+</div>
+</div>
+</div>
+<!-- Mock Item 2 -->
+<div class="flex gap-4 items-start pb-6 border-b border-surface-container">
+<div class="w-20 h-20 bg-surface-container rounded-lg overflow-hidden flex-shrink-0">
+<div class="w-full h-full bg-cover bg-center" data-alt="Close up of premium Korean ginseng root on white surface, clinical lighting." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAFdLeIhWKxg20RTKsag838KNdV7MrL3GRu504cvxnLQdiSpR2Tc4bhUAP_iPoG1Zi5sBEUlDcLE1NiocDD3TDjtAA5jfDh8RQQ6saIx-1d3gdl3vTwwDvKLj7xgr8mLwLuAY7s8xnzAViAcVPFf__L5E-tLoCdzk0PGGDfeoCo2y8sb8EjSRxW-R7URUpmjahP_MtiGjVM0oA35ZciuliieaofQfhbYg7wIqL5a2DagfRtfDM9kH1z3Q')"></div>
+</div>
+<div class="flex-1">
+<div class="flex justify-between mb-1">
+<h4 class="font-bold text-on-surface">Nhân Sâm Cao Cấp</h4>
+<button class="text-error text-label-sm hover:underline">Xóa</button>
+</div>
+<p class="text-primary font-bold mb-3">1.200.000đ</p>
+<div class="flex items-center gap-3">
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded-full hover:bg-surface-variant">-</button>
+<span class="font-bold">1</span>
+<button class="w-8 h-8 flex items-center justify-center border border-outline rounded-full hover:bg-surface-variant">+</button>
+</div>
+</div>
+</div>
+<!-- Delivery Form -->
+<div class="pt-4">
+<h3 class="font-bold text-on-surface mb-4">Thông tin giao hàng</h3>
+<div class="space-y-4">
+<div>
+<label class="block text-label-sm mb-1 text-secondary">Họ và tên</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-0 rounded-lg" id="full-name" placeholder="Ví dụ: Nguyễn Văn A" type="text"/>
+</div>
+<div>
+<label class="block text-label-sm mb-1 text-secondary">Số điện thoại</label>
+<input class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-0 rounded-lg transition-colors" id="phone" placeholder="090 123 4567" type="tel"/>
+</div>
+<div>
+<label class="block text-label-sm mb-1 text-secondary">Địa chỉ giao hàng</label>
+<textarea class="w-full px-4 py-2 bg-surface-container-lowest border border-outline-variant focus:border-primary focus:ring-0 rounded-lg" id="address" placeholder="Số nhà, tên đường, phường/xã, quận/huyện..." rows="3"></textarea>
+</div>
+</div>
+</div>
+</div>
+<!-- Empty State (Conditional) -->
+<div class="hidden flex-1 flex flex-col items-center justify-center p-6 text-center" id="cart-empty-state">
+<span class="material-symbols-outlined text-5xl text-outline-variant mb-4">shopping_basket</span>
+<h3 class="text-headline-md font-bold text-on-surface mb-2">Giỏ hàng của bạn đang trống</h3>
+<button class="text-primary font-bold underline" onclick="toggleCart()">Tiếp tục mua sắm</button>
+</div>
+<!-- Actions -->
+<div class="p-6 bg-surface-container-lowest shadow-inner">
+<div class="flex justify-between items-center mb-6">
+<span class="text-body-lg">Tổng cộng:</span>
+<span class="text-headline-md font-bold text-primary">1.700.000đ</span>
+</div>
+<div class="grid grid-cols-1 gap-3">
+<button class="flex items-center justify-center gap-2 w-full py-4 bg-[#0068FF] text-white font-bold rounded-xl active:scale-[0.98] transition-transform" onclick="checkoutViaZalo()">
+<span class="material-symbols-outlined">chat_bubble</span>
+                        Đặt hàng ngay qua Zalo
+                    </button>
+<button class="flex items-center justify-center gap-2 w-full py-4 border border-[#0068FF] text-[#0068FF] font-bold rounded-xl hover:bg-[#0068FF]/5 active:scale-[0.98] transition-transform">
+<span class="material-symbols-outlined">send</span>
+                        Gửi qua Messenger
+                    </button>
+</div>
+</div>
+</div>
+</div>
+<script>
+        function toggleCart() {
+            const drawer = document.getElementById('cart-drawer-overlay');
+            drawer.classList.toggle('hidden');
+            document.body.classList.toggle('cart-open');
+        }
+
+        function checkoutViaZalo() {
+            const phoneInput = document.getElementById('phone');
+            const nameInput = document.getElementById('full-name');
+            const addressInput = document.getElementById('address');
+            
+            let hasError = false;
+
+            // Reset styles
+            phoneInput.classList.remove('border-error');
+            
+            if (!phoneInput.value.trim() || !/^\d{10,11}$/.test(phoneInput.value.trim().replace(/\s/g, ''))) {
+                phoneInput.classList.add('border-error');
+                hasError = true;
+            }
+
+            if (hasError) {
+                alert('Vui lòng nhập số điện thoại hợp lệ để được hỗ trợ qua Zalo!');
+                return;
+            }
+
+            const message = `Xin chào TruongAnCao, tôi muốn đặt hàng:\n1. Đông Trùng Hạ Thảo (1)\n2. Nhân Sâm Cao Cấp (1)\n\nThông tin người nhận:\n- Tên: ${nameInput.value}\n- SĐT: ${phoneInput.value}\n- ĐC: ${addressInput.value}`;
+            const zaloUrl = `https://zalo.me/0123456789?text=${encodeURIComponent(message)}`;
+            
+            console.log('Redirecting to Zalo...', message);
+            window.open(zaloUrl, '_blank');
+        }
+
+        // Handle simple filter interaction
+        document.querySelectorAll('select, .filter-pill').forEach(el => {
+            el.addEventListener('change', () => {
+                // Mock search logic
+                const grid = document.getElementById('product-grid');
+                const empty = document.getElementById('empty-results');
+                
+                // For demonstration: If "Tất cả" is not selected in both dropdowns, show empty state
+                // This is a simple toggle to show the empty state logic requested
+                const selects = document.querySelectorAll('select');
+                const allSelected = Array.from(selects).every(s => s.value === 'Tất cả');
+
+                if (!allSelected && Math.random() > 0.5) {
+                    grid.classList.add('hidden');
+                    empty.classList.remove('hidden');
+                } else {
+                    grid.classList.remove('hidden');
+                    empty.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+<style>
+        @keyframes slide-in {
+            from { transform: translateX(100%); }
+            to { transform: translateX(0); }
+        }
+        .animate-slide-in {
+            animation: slide-in 0.3s ease-out;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+</body></html>

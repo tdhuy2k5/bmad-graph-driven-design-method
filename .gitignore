@@ -1,0 +1,8 @@
+demo-app/
+node_modules/
+*.log
+.DS_Store
+Thumbs.db
+
+bmad\bmm\2-plan-workflows\bmad-agent-pm\customize.toml
+\_bmad\*

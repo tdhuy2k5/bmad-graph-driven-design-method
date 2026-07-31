@@ -1,0 +1,3 @@
+- [x] Home — /
+- [x] ProductDetail — /san-pham/[slug]
+- [x] AdminDashboard — /admin

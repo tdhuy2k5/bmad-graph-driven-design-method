@@ -1,0 +1,4 @@
+- [x] epic1Catalog — Epic 1: Product Catalog & Discovery
+- [x] epic2Comments — Epic 2: Trust & Community Feedback (Comments)
+- [x] epic3Checkout — Epic 3: Cart & Direct Checkout Handoff
+- [x] epic4Admin — Epic 4: Admin & Moderation (Zero-Backend)

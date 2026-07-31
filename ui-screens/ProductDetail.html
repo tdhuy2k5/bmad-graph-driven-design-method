@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+
+<html class="light" lang="vi"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Đông Trùng Hạ Thảo Premium | TruongAnCao</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "tertiary": "#9b3e3b",
+                        "on-secondary": "#ffffff",
+                        "tertiary-fixed-dim": "#ffb3ae",
+                        "surface-variant": "#dee4de",
+                        "surface": "#f5fbf5",
+                        "surface-container-low": "#eff5ef",
+                        "surface-bright": "#f5fbf5",
+                        "outline": "#6d7a72",
+                        "on-tertiary-fixed-variant": "#7f2928",
+                        "on-primary-fixed": "#002114",
+                        "on-primary-fixed-variant": "#005137",
+                        "surface-container-highest": "#dee4de",
+                        "surface-container": "#e9efe9",
+                        "on-tertiary": "#ffffff",
+                        "on-primary": "#ffffff",
+                        "error": "#ba1a1a",
+                        "surface-tint": "#006c4a",
+                        "on-background": "#171d19",
+                        "on-secondary-container": "#57657a",
+                        "inverse-surface": "#2c322e",
+                        "surface-dim": "#d5dcd6",
+                        "primary-container": "#00855d",
+                        "on-tertiary-container": "#fffbff",
+                        "outline-variant": "#bccac0",
+                        "secondary-fixed-dim": "#b9c7df",
+                        "surface-container-high": "#e4eae4",
+                        "error-container": "#ffdad6",
+                        "primary": "#006948",
+                        "on-primary-container": "#f5fff7",
+                        "secondary-fixed": "#d5e3fc",
+                        "on-tertiary-fixed": "#410004",
+                        "on-secondary-fixed": "#0d1c2e",
+                        "background": "#f5fbf5",
+                        "tertiary-container": "#ba5551",
+                        "secondary-container": "#d5e3fc",
+                        "tertiary-fixed": "#ffdad7",
+                        "inverse-on-surface": "#ecf2ec",
+                        "primary-fixed-dim": "#68dba9",
+                        "surface-container-lowest": "#ffffff",
+                        "primary-fixed": "#85f8c4",
+                        "on-error": "#ffffff",
+                        "inverse-primary": "#68dba9",
+                        "on-secondary-fixed-variant": "#3a485b",
+                        "on-surface-variant": "#3d4a42",
+                        "on-surface": "#171d19",
+                        "secondary": "#515f74",
+                        "on-error-container": "#93000a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "stack-lg": "32px",
+                        "margin-mobile": "16px",
+                        "gutter": "24px",
+                        "container-max": "1280px",
+                        "stack-md": "16px",
+                        "unit": "4px",
+                        "stack-sm": "8px",
+                        "margin-desktop": "48px",
+                        "section-padding": "80px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Inter"],
+                        "display": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "label-sm": ["Inter"],
+                        "body-md": ["Inter"]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(8px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #bccac0; border-radius: 10px; }
+    </style>
+</head>
+<body class="bg-background text-on-surface font-body-md overflow-x-hidden">
+<!-- Global TopNavBar -->
+<header class="bg-surface/80 backdrop-blur-md sticky top-0 z-50 shadow-sm flex justify-between items-center w-full px-margin-mobile md:px-margin-desktop py-4">
+<div class="text-headline-md font-headline-md font-bold text-primary">TruongAnCao</div>
+<nav class="hidden md:flex items-center gap-8">
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-sm" href="#">Products</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-sm" href="#">Our Story</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-sm" href="#">Wholesale</a>
+<a class="text-on-surface-variant hover:text-primary transition-colors duration-200 font-label-sm" href="#">Contact</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="text-on-surface-variant hover:text-primary" onclick="toggleAuthModal()">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+</button>
+<button class="text-primary active:scale-95 transition-transform relative" onclick="toggleCart()">
+<span class="material-symbols-outlined" data-icon="shopping_cart">shopping_cart</span>
+<span class="absolute -top-2 -right-2 bg-tertiary text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center">2</span>
+</button>
+</div>
+</header>
+<!-- Breadcrumbs -->
+<nav class="px-margin-mobile md:px-margin-desktop py-6">
+<ul class="flex items-center gap-2 text-label-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#">Trang chủ</a></li>
+<li><span class="material-symbols-outlined text-[14px]">chevron_right</span></li>
+<li><a class="hover:text-primary" href="#">Sản phẩm</a></li>
+<li><span class="material-symbols-outlined text-[14px]">chevron_right</span></li>
+<li class="text-primary font-bold">Đông Trùng Hạ Thảo</li>
+</ul>
+</nav>
+<!-- Main Content Canvas -->
+<main class="max-w-container-max mx-auto px-margin-mobile md:px-margin-desktop pb-section-padding">
+<!-- Hero Section -->
+<section class="grid grid-cols-1 md:grid-cols-12 gap-gutter mb-section-padding">
+<!-- Image Gallery (Bento Style) -->
+<div class="md:col-span-7 grid grid-cols-4 gap-4 h-[500px]">
+<div class="col-span-4 h-full rounded-xl overflow-hidden shadow-sm">
+<img class="w-full h-full object-cover hover:scale-105 transition-transform duration-700" data-alt="High-fidelity macro studio photography of premium dried Cordyceps Sinensis mushrooms arranged artistically on a minimalist white ceramic plate. The lighting is soft and directional, highlighting the rich orange texture of the medicinal herbs against a breathable, clean light-mode background with soft emerald accents." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBU0UWbAvhYWrmB_HPJO8V8dDOikIvg8mnjyzxdoIoVlkkPXfEouYP7VYdHDobcqClWi4PSWGhOmq9B_GUOofsJ6pSWIOvIRd4K3TKz3Im9C_BP-gXBu5JZlYqAMqNYpBDhPt2jRSMkwSr2cNuCzGlr8YANPhWIyrYLcY5b1hylxcoIVUzv6Z7iFabWSLa0YXIK__MbzeSMKtaE35HyRM6oYuEOXRphJGpEoQeKOZquXg3pEbEjuqOmsQ"/>
+</div>
+</div>
+<!-- Product Info -->
+<div class="md:col-span-5 flex flex-col justify-center">
+<span class="text-primary font-label-sm mb-2 uppercase tracking-widest">Sản phẩm cao cấp</span>
+<h1 class="text-headline-lg font-headline-lg mb-4 text-on-surface">Đông Trùng Hạ Thảo (Premium Cordyceps)</h1>
+<div class="flex items-center gap-2 mb-6">
+<div class="flex text-tertiary">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">star</span>
+</div>
+<span class="text-label-sm text-on-surface-variant">(124 đánh giá)</span>
+</div>
+<div class="text-headline-md font-headline-md text-primary mb-8">1.200.000đ</div>
+<p class="text-body-md text-on-surface-variant mb-8 leading-relaxed">
+                    Sản phẩm Đông Trùng Hạ Thảo TruongAnCao được nuôi cấy trong môi trường vô trùng, kiểm soát nghiêm ngặt các chỉ số nhiệt độ và độ ẩm, đảm bảo hàm lượng Cordycepin và Adenosine cao nhất, mang lại sức khỏe vượt trội cho người sử dụng.
+                </p>
+<div class="flex gap-4">
+<button class="flex-1 bg-primary text-white font-label-sm py-4 rounded-xl shadow-lg hover:bg-primary-container transition-all active:scale-95 flex items-center justify-center gap-2" onclick="toggleCart()">
+<span class="material-symbols-outlined">add_shopping_cart</span>
+                        Thêm vào giỏ hàng
+                    </button>
+<button class="w-14 h-14 border border-outline-variant rounded-xl flex items-center justify-center text-on-surface-variant hover:text-tertiary transition-colors">
+<span class="material-symbols-outlined">favorite</span>
+</button>
+</div>
+</div>
+</section>
+<!-- Tech Specs Table -->
+<section class="mb-section-padding">
+<h3 class="text-headline-md font-headline-md mb-6 border-l-4 border-primary pl-4 uppercase tracking-wider">Thông số kỹ thuật</h3>
+<div class="bg-white rounded-xl overflow-hidden shadow-sm border border-surface-variant">
+<table class="w-full text-left">
+<tbody><tr class="border-b border-surface-variant">
+<th class="px-6 py-4 bg-surface-container font-label-sm text-on-surface-variant w-1/3">Mã sản phẩm</th>
+<td class="px-6 py-4 text-body-md">TAC-CORD-001</td>
+</tr>
+<tr class="border-b border-surface-variant">
+<th class="px-6 py-4 bg-surface-container font-label-sm text-on-surface-variant">Nguồn gốc</th>
+<td class="px-6 py-4 text-body-md">Việt Nam (Lâm Đồng)</td>
+</tr>
+<tr class="border-b border-surface-variant">
+<th class="px-6 py-4 bg-surface-container font-label-sm text-on-surface-variant">Độ tinh khiết</th>
+<td class="px-6 py-4 text-body-md">99% Tự nhiên</td>
+</tr>
+<tr>
+<th class="px-6 py-4 bg-surface-container font-label-sm text-on-surface-variant">Quy cách</th>
+<td class="px-6 py-4 text-body-md">Hộp 20g / 50g sấy thăng hoa</td>
+</tr>
+</tbody></table>
+</div>
+</section>
+<!-- Video Player Island -->
+<section class="mb-section-padding">
+<div class="relative aspect-video w-full rounded-2xl overflow-hidden shadow-2xl group cursor-pointer bg-black" id="videoContainer">
+<div class="absolute inset-0 z-10 transition-opacity duration-500" id="videoPoster">
+<div class="w-full h-full bg-cover bg-center" data-alt="A cinematic wide shot of a high-tech laboratory where a scientist in a clean white coat examines a tray of golden Cordyceps mushrooms. The laboratory features clean steel surfaces, glowing medical monitors, and soft green botanical accents, reflecting a professional medical-grade agricultural environment." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAiOI1Ww3Sb2dqnTAfgva0DvwoD-LaV4k6TZ4IytgPcvaJ3SQJ86Z9vLes0IOStC2WLuKIXHYFlD2d4QfxLLYZt1pm_MYx0QRPjYf1vTuMrkPEGgToZbVtV8nR8S4C7MhbzDZbWwpgjtBGpVxn9RstOpaft7Nhi41Y5lr3IwbBLJ2p-wnCoTwN28RR-qNJzR_KIZv-3t6omubBCKo9GW34CAPwjYY1uwacK2KtIFBIPi5Y_uw3fciIeoQ')"></div>
+<div class="absolute inset-0 bg-black/30 flex items-center justify-center">
+<button class="w-20 h-20 bg-primary text-white rounded-full flex items-center justify-center shadow-2xl group-hover:scale-110 transition-transform" onclick="playVideo()">
+<span class="material-symbols-outlined text-[40px]" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+</button>
+</div>
+</div>
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" class="w-full h-full opacity-0 pointer-events-none" frameborder="0" id="youtubePlayer" src="https://www.youtube.com/embed/dQw4w9WgXcQ?enablejsapi=1" title="Product Showcase"></iframe>
+</div>
+</section>
+<!-- Comment Island -->
+<section class="mb-section-padding max-w-3xl mx-auto">
+<h3 class="text-headline-md font-headline-md mb-8 flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">chat_bubble</span>
+                Thảo luận sản phẩm
+            </h3>
+<div class="bg-surface-container-low p-6 rounded-2xl mb-8 border border-outline-variant/20">
+<div class="flex items-start gap-4">
+<div class="w-10 h-10 rounded-full bg-primary-fixed flex items-center justify-center text-primary font-bold">U</div>
+<div class="flex-1">
+<textarea class="w-full p-4 rounded-xl border border-outline-variant bg-white focus:ring-2 focus:ring-primary focus:border-transparent transition-all outline-none" placeholder="Chia sẻ cảm nhận của bạn về sản phẩm..." rows="3"></textarea>
+<div class="mt-4 flex justify-between items-center">
+<span class="text-label-sm text-on-surface-variant">Vui lòng đăng nhập để gửi bình luận</span>
+<button class="bg-primary text-white px-6 py-2 rounded-lg font-label-sm hover:bg-primary-container transition-colors" onclick="toggleAuthModal()">Đăng nhập</button>
+</div>
+</div>
+</div>
+</div>
+<div class="space-y-6">
+<!-- User Comment -->
+<div class="flex gap-4 p-4 border-b border-surface-variant">
+<img class="w-12 h-12 rounded-full object-cover" data-alt="A high-quality studio portrait of a sophisticated young professional woman with a warm, natural smile. She is set against a clean, light-grey background that matches the minimalist corporate aesthetic of the brand. The lighting is soft and professional." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDP8tdh7FWkDd4FnJCUpHu-XW3Nfnw6oQUFxKnPhGE7nM6YutBUtyJgythiHSkL5EWq_N2F6zW6hJ8D4wh9y-4Co9049mxr7yeYkQUKDXLpapuBgZQTlrGVXRjOm6ZDYkYq4JeIrTiQKp_e3RbTU8aswRyn3XLOesWyHnMb2dSiAnfODCW3_zZs6BS9ayo0nYmx6gTX-0iGuQKtOxEXmC5-QhgwGDmsht5CIJJvqB974ll52yWRpVU8bw"/>
+<div class="flex-1">
+<div class="flex items-center justify-between mb-1">
+<span class="font-bold text-on-surface">Minh Anh</span>
+<span class="text-[12px] text-on-surface-variant">2 ngày trước</span>
+</div>
+<p class="text-body-md text-on-surface-variant">Sản phẩm rất chất lượng, đóng gói cực kỳ sang trọng. Mình mua làm quà tặng cho bố mẹ rất ưng ý.</p>
+<div class="mt-2 flex items-center gap-4">
+<button class="text-label-sm text-on-surface-variant flex items-center gap-1 hover:text-primary">
+<span class="material-symbols-outlined text-[16px]">thumb_up</span> 12
+                            </button>
+<button class="text-label-sm text-on-surface-variant flex items-center gap-1 hover:text-primary">Phản hồi</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- Related Products Grid -->
+<section>
+<h3 class="text-headline-md font-headline-md mb-8">Sản phẩm liên quan</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-gutter">
+<!-- ProductCardIsland 1 -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-surface-variant hover:shadow-xl transition-shadow group">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A premium jar of Organic Saffron threads presented in an elegant glass vial with a minimalist black and emerald label. The scene is shot on a clean white surface with artistic shadows, conveying luxury and medicinal purity in a modern light-mode style." src="https://lh3.googleusercontent.com/aida-public/AB6AXuA47B4WSQJGBjXgF1y73YgRcgnPlNTRveoSIDKn8TV-jeF69ctP85fcP_n2V-s7Mc-IgAIePl_r5YiL41BVAapNIFnk8eTLOfLzWUB0F0JegaIZyhyGG17VhF6rnLDwu_Q4mE4brGu6g_sQSEHfW_JLLHQlgJaqaSiz2djfMHO0jSNh87tInjI9BjJ5yRb4UtIU7ce7Ucl_9PLBKI4huLwSNDoG_Yu41c4IrOFNm9DOLTt8dMmtPKXQLg"/>
+<div class="absolute top-2 right-2 bg-primary text-white text-[10px] px-2 py-1 rounded-full font-bold">NEW</div>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-2">Nhụy Hoa Nghệ Tây (Saffron)</h4>
+<div class="text-primary font-bold">450.000đ</div>
+<button class="w-full mt-4 py-2 border border-primary text-primary rounded-lg font-label-sm hover:bg-primary hover:text-white transition-colors">Xem chi tiết</button>
+</div>
+<!-- ProductCardIsland 2 -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-surface-variant hover:shadow-xl transition-shadow group">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A minimalist arrangement of organic dried Ginseng roots on a traditional wooden tray, reimagined with a modern editorial lighting style. The high-key lighting and soft emerald accents emphasize the botanical vitality and scientific purity of the product." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBsFEW46SzvGd6l2Tx28iCrnansB_YgWF-XunHPHgrSvlVKMVkU1OjxHPdJq47xh32mcWcxd0aAeG9gtjC2prCuwyq-CZzxWpBOLmzS6rp1xF6LmrHm7nNKdf94Z6e8INKez2ct0Q5Sj9gl19_Kh7LBrjUYnQDHrwXrsAAV51ZTw914E2MwlrdzDjTzFiqiTJBFf1zGcKIuqrAQo7aYcjGk1y22_Os-fU66nlgT9A6r5_nz343ZoD_MaQ"/>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-2">Nhân Sâm Cao Cấp</h4>
+<div class="text-primary font-bold">2.100.000đ</div>
+<button class="w-full mt-4 py-2 border border-primary text-primary rounded-lg font-label-sm hover:bg-primary hover:text-white transition-colors">Xem chi tiết</button>
+</div>
+<!-- ProductCardIsland 3 -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-surface-variant hover:shadow-xl transition-shadow group">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A clean product shot of emerald-colored organic herbal tea leaves in a transparent glass container. The lighting is crisp and modern, with a clinical yet organic feel that suggests premium quality and high-standard agricultural science." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi4D2bE2tSmGOPvBEbeQ7d4JVeeD9ZwFWadXnLhIPYQ2-eJjHEu-ZogIr_4CjtgHnP2kgBbL3bDvykw6elbfa7YOGp1UxSPKb7cDO_v6IfLHjuPusCgzoQnlyXPnbNIAGy-tB2pY8c4cNTSKSD_J4KRAZm38fRt-Lfu-8mAYHqPUWG1k_INC1ZuGoLxfsiO94bpN4lkNjo7KX-bZHp9FSPAUgXWkbPekav9WzemJrbPX7UlW4cuPohLw"/>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-2">Trà Thảo Mộc Thanh Nhiệt</h4>
+<div class="text-primary font-bold">180.000đ</div>
+<button class="w-full mt-4 py-2 border border-primary text-primary rounded-lg font-label-sm hover:bg-primary hover:text-white transition-colors">Xem chi tiết</button>
+</div>
+<!-- ProductCardIsland 4 -->
+<div class="bg-white p-4 rounded-2xl shadow-sm border border-surface-variant hover:shadow-xl transition-shadow group">
+<div class="aspect-square rounded-xl overflow-hidden mb-4 relative">
+<img class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" data-alt="A bottle of organic mushroom extract oil with a dropper, placed on a smooth white stone. The background features soft focus greenery and bright, airy lighting, embodying the brand's intersection of traditional herbs and modern science." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDtwimlwlwlKoJ4gB0t2mX6rALfomitmd9R4q1-wvTdKxLmiUi7qX5Wuhg3DD5midLWm0ql_dT61ueYImXUo77TvRj7rUH5W4ijCmMGisBbRVpIbcGC2Pvn1zpXh96zYCqoByvqSO0NuMX-_G8YSIjSizBkovpfBsbsXRMexhaACBqtxoaAm6GBeblrVjffzHktoLk6QMdGTszffcjwCaJgFkRUcQx7E17H2kL_c5W98XYeUatub4lUlQ"/>
+</div>
+<h4 class="font-headline-md text-on-surface text-base mb-2">Tinh Chất Linh Chi</h4>
+<div class="text-primary font-bold">890.000đ</div>
+<button class="w-full mt-4 py-2 border border-primary text-primary rounded-lg font-label-sm hover:bg-primary hover:text-white transition-colors">Xem chi tiết</button>
+</div>
+</div>
+</section>
+</main>
+<!-- Sticky Zalo Box -->
+<a class="fixed bottom-8 left-margin-mobile md:left-margin-desktop z-40 bg-[#0068ff] text-white p-4 rounded-full shadow-2xl flex items-center gap-3 hover:scale-105 transition-transform active:scale-95" href="#">
+<span class="material-symbols-outlined text-[24px]">contact_support</span>
+<span class="hidden md:inline font-label-sm pr-2">Tư vấn &amp; Báo giá qua Zalo</span>
+</a>
+<!-- Cart Drawer Island -->
+<div class="fixed inset-0 z-[60] invisible transition-all duration-300" id="cartDrawer">
+<div class="absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="absolute right-0 top-0 h-full w-full md:w-[450px] bg-surface shadow-2xl translate-x-full transition-transform duration-300 flex flex-col p-6" id="cartPanel">
+<div class="flex items-center justify-between mb-8">
+<h2 class="text-headline-md font-headline-md text-primary">Giỏ hàng của bạn</h2>
+<button class="p-2 hover:bg-surface-variant rounded-full" onclick="toggleCart()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+<div class="flex-1 overflow-y-auto space-y-6 pr-2">
+<!-- Item -->
+<div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm">
+<div class="w-20 h-20 rounded-lg overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A minimalist product close-up of premium dried Cordyceps, focusing on the vibrant orange texture and scientific purity of the herb against a white background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDbimn9LsIqOSn-JnKwJHCORoZPlDXyVm8es5tqBF709um9nc8PtOroaPwoE8w9G8Fk-d3SwMx9yKVv3P1jBDg1KAUPLqY57KS4aY0zH1VV_L9QrE6mrsfKLRKpsbk85-AnnlTzhu-t1uPNSNLZaZ-zPWYYG6KKVsTOgzcaj0eTJ55GRbUSiPM173Xmgmf95VzU7YHXd8_UAiQI7CeGll0fSMT9f8ZyFH9HO1Mw3apyao2mq2FOG4GXgw"/>
+</div>
+<div class="flex-1">
+<h4 class="font-bold text-on-surface">Đông Trùng Hạ Thảo</h4>
+<div class="text-primary text-sm mb-2">1.200.000đ</div>
+<div class="flex items-center gap-4">
+<div class="flex items-center border border-outline-variant rounded-lg">
+<button class="px-2 py-1 hover:text-primary">-</button>
+<span class="px-3 font-bold">1</span>
+<button class="px-2 py-1 hover:text-primary">+</button>
+</div>
+<button class="text-error text-sm font-label-sm">Xóa</button>
+</div>
+</div>
+</div>
+<!-- Delivery Form -->
+<div class="mt-8 border-t border-surface-variant pt-8">
+<h3 class="font-bold mb-4">Thông tin giao hàng</h3>
+<form class="space-y-4">
+<div>
+<label class="block text-label-sm text-on-surface-variant mb-1">Họ và tên</label>
+<input class="w-full p-3 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary outline-none" placeholder="Nhập tên của bạn" type="text"/>
+</div>
+<div>
+<label class="block text-label-sm text-on-surface-variant mb-1">Số điện thoại</label>
+<input class="w-full p-3 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary outline-none" placeholder="090..." type="tel"/>
+</div>
+<div>
+<label class="block text-label-sm text-on-surface-variant mb-1">Địa chỉ nhận hàng</label>
+<textarea class="w-full p-3 rounded-lg border border-outline-variant focus:ring-1 focus:ring-primary outline-none" placeholder="Số nhà, tên đường, phường/xã..." rows="2"></textarea>
+</div>
+</form>
+</div>
+</div>
+<div class="mt-auto border-t border-surface-variant pt-6 bg-surface">
+<div class="flex justify-between items-center mb-4 text-headline-md">
+<span class="font-body-md text-on-surface-variant">Tổng cộng:</span>
+<span class="font-bold text-primary">1.200.000đ</span>
+</div>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-container shadow-lg">Xác nhận đặt hàng</button>
+</div>
+</div>
+</div>
+<!-- Auth Modal Island -->
+<div class="fixed inset-0 z-[70] invisible transition-all duration-300" id="authModal">
+<div class="absolute inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300" id="authOverlay" onclick="toggleAuthModal()"></div>
+<div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] max-w-[400px] bg-white rounded-2xl p-8 shadow-2xl scale-90 opacity-0 transition-all duration-300" id="authPanel">
+<div class="text-center mb-8">
+<h2 class="text-headline-md font-headline-md text-primary mb-2">Chào mừng trở lại</h2>
+<p class="text-on-surface-variant text-sm">Đăng nhập để nhận ưu đãi từ TruongAnCao</p>
+</div>
+<form class="space-y-4">
+<input class="w-full p-4 rounded-xl border border-outline-variant focus:ring-1 focus:ring-primary outline-none bg-surface-container-low" placeholder="Email" type="email"/>
+<input class="w-full p-4 rounded-xl border border-outline-variant focus:ring-1 focus:ring-primary outline-none bg-surface-container-low" placeholder="Mật khẩu" type="password"/>
+<button class="w-full bg-primary text-white py-4 rounded-xl font-bold hover:shadow-lg transition-shadow" type="submit">Đăng nhập</button>
+</form>
+<div class="mt-6 text-center text-sm">
+<a class="text-on-surface-variant hover:text-primary" href="#">Quên mật khẩu?</a>
+<div class="mt-4">
+<span>Chưa có tài khoản? </span>
+<a class="text-primary font-bold underline" href="#">Đăng ký ngay</a>
+</div>
+</div>
+<button class="absolute top-4 right-4 text-on-surface-variant" onclick="toggleAuthModal()">
+<span class="material-symbols-outlined">close</span>
+</button>
+</div>
+</div>
+<!-- Footer -->
+<footer class="bg-surface-container w-full py-section-padding px-margin-mobile md:px-margin-desktop grid grid-cols-1 md:grid-cols-4 gap-gutter">
+<div class="col-span-1 md:col-span-1">
+<div class="text-headline-md font-headline-md font-bold text-primary mb-4">TruongAnCao</div>
+<p class="text-body-md text-on-surface-variant mb-6 leading-relaxed">
+                Nơi hội tụ giữa tinh hoa nông nghiệp truyền thống và công nghệ y sinh hiện đại.
+            </p>
+</div>
+<div>
+<h4 class="font-bold mb-4 uppercase tracking-wider text-label-sm">Liên kết</h4>
+<ul class="space-y-3 text-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Privacy Policy</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Terms of Service</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Shipping Info</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Return Policy</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 uppercase tracking-wider text-label-sm">Sản phẩm</h4>
+<ul class="space-y-3 text-body-md text-on-surface-variant">
+<li><a class="hover:text-primary transition-colors" href="#">Sâm Việt Nam</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Nấm Linh Chi</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Đông Trùng Hạ Thảo</a></li>
+<li><a class="hover:text-primary transition-colors" href="#">Thảo Dược Khô</a></li>
+</ul>
+</div>
+<div>
+<h4 class="font-bold mb-4 uppercase tracking-wider text-label-sm">Theo dõi chúng tôi</h4>
+<div class="flex gap-4">
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant cursor-pointer hover:bg-primary hover:text-white transition-all">F</div>
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant cursor-pointer hover:bg-primary hover:text-white transition-all">I</div>
+<div class="w-10 h-10 rounded-full bg-white flex items-center justify-center border border-outline-variant cursor-pointer hover:bg-primary hover:text-white transition-all">Y</div>
+</div>
+<p class="mt-8 text-label-sm text-on-surface-variant">© 2024 TruongAnCao. Pure agricultural science.</p>
+</div>
+</footer>
+<script>
+        function toggleCart() {
+            const drawer = document.getElementById('cartDrawer');
+            const panel = document.getElementById('cartPanel');
+            const overlay = document.getElementById('cartOverlay');
+            
+            if (drawer.classList.contains('invisible')) {
+                drawer.classList.remove('invisible');
+                setTimeout(() => {
+                    panel.classList.remove('translate-x-full');
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                panel.classList.add('translate-x-full');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    drawer.classList.add('invisible');
+                }, 300);
+            }
+        }
+
+        function toggleAuthModal() {
+            const modal = document.getElementById('authModal');
+            const panel = document.getElementById('authPanel');
+            const overlay = document.getElementById('authOverlay');
+            
+            if (modal.classList.contains('invisible')) {
+                modal.classList.remove('invisible');
+                setTimeout(() => {
+                    panel.classList.remove('scale-90', 'opacity-0');
+                    overlay.classList.remove('opacity-0');
+                }, 10);
+            } else {
+                panel.classList.add('scale-90', 'opacity-0');
+                overlay.classList.add('opacity-0');
+                setTimeout(() => {
+                    modal.classList.add('invisible');
+                }, 300);
+            }
+        }
+
+        function playVideo() {
+            const poster = document.getElementById('videoPoster');
+            const player = document.getElementById('youtubePlayer');
+            
+            poster.classList.add('opacity-0');
+            setTimeout(() => {
+                poster.classList.add('hidden');
+                player.classList.remove('opacity-0', 'pointer-events-none');
+                player.src += "&autoplay=1";
+            }, 500);
+        }
+    </script>
+</body></html>
