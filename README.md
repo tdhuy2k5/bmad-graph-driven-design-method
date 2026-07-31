@@ -21,7 +21,7 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 2. **Chưa có Rollback/Version Control cho Graph:** Các file `.cypher` đang được ghi nối liên tục. Nếu AI lỡ sinh sai một Node và lưu vào file, hiện chưa có cơ chế tự động snapshot/rollback lại phiên bản Graph trước đó ngoài việc dùng Git thủ công.
 3. **Thiếu Cypher Lint (Bắt lỗi cú pháp Cypher):** Nếu AI vô tình quên đóng ngoặc `}` khi viết Cypher, lỗi này sẽ lọt vào file và làm crash quá trình Verify sau đó. Hiện chưa có bước "Linting" tự động chặn lỗi cú pháp này trước khi ghi file.
 4. **Cơ chế Error Recovery chưa rõ ràng:** Nếu lệnh `/verify-graph-alignment` báo đỏ (Lỗi), quy trình hiện tại đòi hỏi con người phải tự mở file `.cypher` để sửa tay. AI chưa có khả năng tự động đọc log lỗi và vá Graph.
-
+5. Chưa xây dựng xong cơ chết MCP Local cho Neo4j desktop để kết nối Agent
 ---
 
 ## Ký hiệu
