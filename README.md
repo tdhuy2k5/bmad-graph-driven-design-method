@@ -1,4 +1,4 @@
-# Quy trình Phát triển Graph-Driven (Greenfield)
+# Quy trình Phát triển Graph-Driven 
 > Từ Ý tưởng → Code chạy được. Áp dụng cho mọi project mới.
 
 ---
@@ -21,7 +21,7 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 2. **Chưa có Rollback/Version Control cho Graph:** Các file `.cypher` đang được ghi nối liên tục. Nếu AI lỡ sinh sai một Node và lưu vào file, hiện chưa có cơ chế tự động snapshot/rollback lại phiên bản Graph trước đó ngoài việc dùng Git thủ công.
 3. **Thiếu Cypher Lint (Bắt lỗi cú pháp Cypher):** Nếu AI vô tình quên đóng ngoặc `}` khi viết Cypher, lỗi này sẽ lọt vào file và làm crash quá trình Verify sau đó. Hiện chưa có bước "Linting" tự động chặn lỗi cú pháp này trước khi ghi file.
 4. **Cơ chế Error Recovery chưa rõ ràng:** Nếu lệnh `/verify-graph-alignment` báo đỏ (Lỗi), quy trình hiện tại đòi hỏi con người phải tự mở file `.cypher` để sửa tay. AI chưa có khả năng tự động đọc log lỗi và vá Graph.
-5. Chưa xây dựng xong cơ chết MCP Local cho Neo4j desktop để kết nối Agent
+
 ---
 
 ## Ký hiệu
@@ -35,8 +35,84 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 
 ---
 
+## PHASE -1 — Foundation (Xây dựng Nền tảng Cốt lõi)
+> **Mục tiêu:** Biến ý tưởng thô thành hiểu biết đủ sâu để có thể viết Brief chính xác. Bỏ qua phase này nếu bạn đã có ý tưởng cực kỳ rõ ràng và đã nghiên cứu thị trường kỹ.
+
+---
+
+### Bước -1.1 — Brainstorming (Khai phá Ý tưởng)
+💬 **Mở chat mới** | Lệnh: `bmad-brainstorming`
+
+> Dùng khi ý tưởng còn mờ nhạt, nhiều hướng đi cạnh tranh nhau, hoặc bạn chưa chắc mình muốn làm gì.
+
+| Ai làm | Việc phải làm |
+|---|---|
+| 🤖 | Facilitate phiên brainstorm bằng nhiều kỹ thuật sáng tạo (SCAMPER, "How Might We", Reverse Brainstorm...) |
+| 👤 | Tự do đề xuất ý tưởng — không phán xét giai đoạn này |
+| 🤖 | Nhóm và phân loại ý tưởng, highlight những ý tưởng có tiềm năng nhất |
+| 👤 | **Chọn 1–3 hướng ý tưởng để đi sâu hơn vào các bước sau** |
+
+**Output:** Ghi chú tổng hợp ý tưởng (lưu thủ công hoặc nhờ AI tóm tắt vào `docs/brainstorm-notes.md`)
+
+> 📝 Không cần output file cứng ở bước này. Mục tiêu là làm rõ ý tưởng trong đầu bạn — output chính là sự rõ ràng.
+
+---
+
+### Bước -1.2 — Domain Research (Nghiên cứu Lĩnh vực)
+💬 **Mở chat mới** | Lệnh: `bmad-domain-research`
+
+> Dùng khi bạn chưa hiểu sâu về lĩnh vực mình sắp làm sản phẩm (ví dụ: logistics, fintech, healthcare, edtech...).
+
+| Ai làm | Việc phải làm |
+|---|---|
+| 🤖 | Nghiên cứu ngành: thuật ngữ chuyên ngành, quy trình nghiệp vụ phổ biến, các quy định pháp lý cần biết |
+| 🤖 | Xác định Pain Points điển hình của người dùng trong ngành đó |
+| 🤖 | Liệt kê các ràng buộc đặc thù của ngành (compliance, data privacy, v.v.) |
+| 👤 | **Review: Có điều gì bạn không biết mà quan trọng không? Bổ sung thêm vào research** |
+
+**Output:** `docs/domain-research.md`
+
+> 📝 Kết quả bước này sẽ trực tiếp ảnh hưởng đến phần Non-Functional Requirements (NFR) ở Bước 0.2 (PRD). Đừng bỏ qua nếu sản phẩm có tính chuyên môn cao.
+
+---
+
+### Bước -1.3 — Market Research (Nghiên cứu Thị trường)
+💬 **Mở chat mới** | Lệnh: `bmad-market-research`
+
+> Dùng khi bạn cần biết đối thủ là ai, họ làm tốt/kém ở đâu, và cơ hội thị trường nằm ở đâu.
+
+| Ai làm | Việc phải làm |
+|---|---|
+| 🤖 | Phân tích các đối thủ cạnh tranh trực tiếp & gián tiếp |
+| 🤖 | Lập bảng so sánh tính năng, giá, định vị của từng đối thủ |
+| 🤖 | Xác định khoảng trống thị trường (Market Gap) |
+| 🤖 | Đề xuất Differentiation — điểm khác biệt mà sản phẩm của bạn nên sở hữu |
+| 👤 | **Chọn Positioning và Differentiator chính thức** (sẽ đưa vào Product Brief) |
+
+**Output:** `docs/market-research.md`
+
+> ⚠️ Nếu bỏ qua bước này, Product Brief sẽ không có cơ sở để xác định tại sao sản phẩm của bạn tốt hơn giải pháp hiện có. John (PM) sẽ hỏi lại câu này ở Bước 0.2.
+
+---
+
+### Bước -1.4 — Tổng hợp nền tảng
+💬 **Cùng chat hoặc mở chat mới**
+
+> Bước chuyển giao — không cần gọi thêm skill. Bạn tự tổng hợp và xác nhận với AI.
+
+| Ai làm | Việc phải làm |
+|---|---|
+| 👤 | Đọc lại `brainstorm-notes.md`, `domain-research.md`, `market-research.md` |
+| 👤 | Trả lời 3 câu hỏi cốt lõi: **"Vấn đề cần giải quyết là gì? User chính là ai? Lợi thế cạnh tranh là gì?"** |
+| 🤖 | Giúp bạn diễn đạt lại 3 câu đó thành các câu súc tích, rõ ràng |
+| 👤 | **Confirm — 3 câu này sẽ là DNA của toàn bộ pipeline sau** |
+
+✅ **CHECKPOINT -1:** Bạn phải tự trả lời được 3 câu trên mà không do dự trước khi chuyển sang Phase 0. Nếu còn phân vân, quay lại Bước -1.1.
+
+---
+
 ## PHASE 0 — Planning (BMad)
-> **Mục tiêu:** Biến ý tưởng thành tài liệu cứng để AI có thể đọc và thực thi.
+> **Mục tiêu:** Biến ý tưởng (đã được làm rõ ở Phase -1) thành tài liệu cứng để AI có thể đọc và thực thi.
 
 ---
 
@@ -46,7 +122,7 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 | Ai làm | Việc phải làm |
 |---|---|
 | 🤖 | Agent Mary (Analyst) đặt câu hỏi khám phá |
-| 👤 | Bạn trả lời: Vấn đề là gì? User là ai? Tính năng cốt lõi? Constraint? |
+| 👤 | Bạn trả lời dựa trên nền tảng đã xây ở Phase -1: Vấn đề là gì? User là ai? Lợi thế cạnh tranh? Constraint? |
 | 🤖 | Gọi `bmad-product-brief` để tổng hợp thành file |
 | 👤 | **Đọc kỹ output và sửa những gì sai trước khi confirm** |
 
@@ -339,6 +415,10 @@ Chú ý khi dùng stitch MCP phải lấy về đúng project bạn đang làm �
 
 | Phase | Lệnh | Lặp? | 👤 Can thiệp tại | Output |
 |---|---|---|---|---|
+| **-1.1 Brainstorming** | `bmad-brainstorming` | 🔁 nếu cần | Chọn hướng ý tưởng | `brainstorm-notes.md` |
+| **-1.2 Domain Research** | `bmad-domain-research` | ❌ | Review kiến thức ngành | `domain-research.md` |
+| **-1.3 Market Research** | `bmad-market-research` | ❌ | Chọn Positioning | `market-research.md` |
+| **-1.4 Tổng hợp nền tảng** | *(tự làm)* | ❌ | **Xác nhận 3 câu DNA** | *(nội bộ)* |
 | 0.1 Product Brief | `bmad-agent-analyst` | ❌ | Review output | `product_brief.md` |
 | 0.2 PRD | `bmad-agent-pm` | ❌ | Review + sửa từng dòng | `prd.md` |
 | 0.3 Architecture | `custom-agent-architect` | ❌ | Quyết định tech stack | `ARCHITECTURE-SPINE.md` |
