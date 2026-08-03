@@ -1,4 +1,4 @@
-# Quy trình Phát triển Graph-Driven 
+# Quy trình Phát triển Graph-Driven BMAD
 > Từ Ý tưởng → Code chạy được. Áp dụng cho mọi project mới.
 
 ---
