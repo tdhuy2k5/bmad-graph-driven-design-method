@@ -1,5 +1,0 @@
-- [x] CatalogService — Service to read static product data from JSON
-- [x] AuthService — Firebase Authentication Service
-- [x] CommentService — Firestore Comments Service
-- [x] CartService — Client-side cart and checkout handoff service (localStorage)
-- [x] GitManagementService — GitHub API for content edits

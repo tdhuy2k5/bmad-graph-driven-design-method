@@ -9,8 +9,8 @@ project_knowledge: "{project-root}/docs"
 user_skill_level: intermediate
 
 # Core Configuration Values
-project_name: TruongAnCao
+project_name: MyProject
 document_output_language: English
 output_folder: "{project-root}/_bmad-output"
-user_name: tacadmin
+user_name: Developer
 communication_language: English

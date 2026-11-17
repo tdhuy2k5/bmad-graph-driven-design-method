@@ -10,7 +10,7 @@
 # ─────────────────────────────────────────────────────────────────
 
 [core]
-user_name = "tacadmin"
+user_name = "Developer"
 communication_language = "English"
 
 [modules.bmm]

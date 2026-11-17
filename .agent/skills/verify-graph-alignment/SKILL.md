@@ -1,7 +1,7 @@
 ---
-name: "Verify Graph Alignment (Frontend ↔ Backend)"
+name: verify-graph-alignment
 command: "/verify-graph-alignment"
-description: "Kiểm tra chéo Frontend Graph và Backend Graph để đảm bảo 100% đồng bộ về Roles, Input/Output và UI Actions trước khi sinh code."
+description: "Kiểm tra chéo Frontend Graph (graph-master.cypher) và Backend Graph (backend-graph.cypher) để đảm bảo 100% đồng bộ về Roles, Input/Output, Schema và UI Actions trước khi sinh code."
 required_context:
   - "system-graphs/backend-graph.cypher"
   - "system-graphs/graph-master.cypher"
@@ -10,37 +10,46 @@ required_context:
 # SYSTEM PROMPT FOR AI AGENT
 
 **Role:** Quality Assurance Architect (Graph Alignment Auditor).
-**Goal:** Cross-validate `backend-graph.cypher` against `graph-master.cypher` (Frontend) and produce a Readiness Report. Block any mismatches from proceeding to code generation.
+**Goal:** Cross-validate `system-graphs/backend-graph.cypher` against `system-graphs/graph-master.cypher` and produce a Readiness Report. Block any mismatches from proceeding to code generation.
 
 ---
 
 ## Execution Steps
 
-### Step 1: Extract Action Map from Frontend Graph
-From `graph-master.cypher`, collect every action edge:
-- All `:MUTATES_STATE` edges → what action they call, from which `:SharedIsland` or `:UINode`.
-- All `:NAVIGATES_TO` edges.
-- All `:TRANSITIONS_TO { if, animation }` edges → record the `if` condition and `animation`.
-- Record `requiredRole` and `visibleIf` for every `:UINode` and `:SharedIsland`.
+### Step 1: Extract Action Map & Schema from Frontend Graph
+From `system-graphs/graph-master.cypher`, collect:
+- Every `:UINode` and `:SharedIsland`: record `id`, `route` (flag if drifted to `name`), `title` (flag if drifted to `goal`), `requiredRole`, `visibleIf`, `inPageStates`.
+- Every `:MUTATES_STATE` and `:NAVIGATES_TO` edge: record source node, `action`, `targetFunction` (fallback: `action`), `targetStep`, `requiredRole`, `sends`, `location`.
+- Every `:TRANSITIONS_TO` edge: record `if` condition and `animation`.
+- Also check Cypher structural hygiene: any mid-file `;`, missing `MERGE`, or duplicated edges violating the Delegation Rule (edge emitted on both `:UINode` and mounted `:SharedIsland`).
 
-### Step 2: Extract Permission Map from Backend Graph
-From `backend-graph.cypher`, collect every `(:Function)` node:
-- Record `id`, `roles`, `input`, `output`, `guard`.
+### Step 2: Extract Permission & Signature Map from Backend Graph
+From `system-graphs/backend-graph.cypher`, collect every `(:Function)` and `(:WorkflowStep)` node:
+- For `(:Function)`: record `id`, `roles`, `input`, `output`, `guard`, `type`.
+- For `(:WorkflowStep)`: record `id`, `name`, `order`.
 
-### Step 3: Cross-Validate — Check all 4 dimensions:
+### Step 3: Cross-Validate — Check all 5 dimensions:
 
-**[Check A] Existence:** Does every UI action edge have a corresponding `(:Function)` or `(:WorkflowStep)` in the Backend Graph?
-- FAIL: A UI action calls `addProduct` but no `(:Function { id: "addProduct" })` exists in backend.
+**[Check A] Existence:** Does every UI action edge (`:MUTATES_STATE` or `:NAVIGATES_TO` that triggers logic) have a matching `(:Function)` (matched by `edge.targetFunction ?? edge.action`) OR `(:WorkflowStep)` (matched by `edge.targetStep`) in `backend-graph.cypher`?
+- 🔴 FAIL: A UI edge calls `addProduct` / `filterProducts` with no matching `(:Function)` or `(:WorkflowStep)` in `backend-graph.cypher`.
+- Note: Pure static route navigation (`:NAVIGATES_TO` to another `:UINode` with no backend mutation) is 🟢 PASS if the target `:UINode` exists.
 
-**[Check B] Role Parity:** Does `requiredRole` on every UI Node match `roles` on the Backend Function it calls?
-- FAIL: `(:UINode { requiredRole: "PUBLIC" })` calls `(:Function { roles: "ADMIN" })` — a PUBLIC user would trigger an admin-only function.
-- FAIL: `(:UINode { requiredRole: "ADMIN" })` calls `(:Function { roles: "PUBLIC" })` — a UI over-restricts access that backend allows (UX bug, not security bug — still flag).
+**[Check B] Role Parity:** Compute effective UI role per action:
+`effectiveUIRole = edge.requiredRole ?? sourceIsland.requiredRole ?? sourceUINode.requiredRole`
+Compare `effectiveUIRole` against `(:Function).roles`:
+- 🔴 FAIL (Security Hole): `effectiveUIRole` is more permissive than `(:Function).roles` (e.g., `PUBLIC` UI action calling `AUTHENTICATED` or `ADMIN` function, or missing `requiredRole` on a restricted action).
+- 🟡 WARN (Over-restricted UX): `effectiveUIRole` is stricter than `(:Function).roles` (e.g., `ADMIN` UI calling `PUBLIC` function — verify whether intentional admin gate like `loginAdmin`).
 
-**[Check C] Input Contract:** Does the data the UI sends match the `input` signature of the Backend Function?
-- FAIL: UI sends `{ email, phone }` but Function expects `input: "email: string, password: string"` — missing `password` field.
+**[Check C] Input Contract:** Compare `edge.sends` on UI action edges against `(:Function).input`:
+- 🔴 FAIL: Missing required parameter in `edge.sends` (e.g., Function expects `email: string, password: string`, UI sends only `email`), or `sends` is completely omitted on a function requiring inputs.
+- 🟡 WARN: Parameter naming/type differs slightly or needs mapping adapter.
 
-**[Check D] Orphan Detection:** Are there Backend Functions with NO corresponding UI action?
-- WARN: `(:Function { id: "clearCache", roles: "ADMIN" })` exists but no UI button or `:MUTATES_STATE` edge calls it. This is not an error but flags potential dead code or a missing UI element.
+**[Check D] Orphan Detection:** Are there `(:Function)` nodes in `backend-graph.cypher` with NO corresponding UI edge referencing them?
+- 🟡 WARN: Flag orphan functions (potential dead code or missing UI trigger).
+
+**[Check E] Schema & Cypher Hygiene:**
+- 🔴 FAIL: Mid-file `;` in either `.cypher` file (breaks Neo4j atomic transaction).
+- 🟡 WARN: Property drift (`:UINode` using `name`/`goal` instead of `route`/`title`, missing `requiredRole` on `:SharedIsland`, or Delegation Rule duplication between `:UINode` and `:SharedIsland`).
 
 ---
 
@@ -48,7 +57,7 @@ From `backend-graph.cypher`, collect every `(:Function)` node:
 
 Output a structured Readiness Report in Markdown, with NO conversational filler:
 
-```
+```markdown
 # Graph Alignment Report — [Timestamp]
 
 ## Summary
@@ -56,37 +65,36 @@ Output a structured Readiness Report in Markdown, with NO conversational filler:
 |---|---|
 | [A] Existence | 🟢 PASS / 🔴 FAIL (N issues) |
 | [B] Role Parity | 🟢 PASS / 🔴 FAIL (N issues) |
-| [C] Input Contract | 🟢 PASS / 🟡 WARN (N issues) |
+| [C] Input Contract | 🟢 PASS / 🔴 FAIL / 🟡 WARN (N issues) |
 | [D] Orphan Functions | 🟢 NONE / 🟡 WARN (N orphans) |
+| [E] Schema & Hygiene | 🟢 PASS / 🔴 FAIL / 🟡 WARN (N issues) |
 
 ## Overall Gate
-✅ READY TO PROCEED (all checks passed)
+✅ READY TO PROCEED (all checks passed, 0 🔴)
 — OR —
-🚫 BLOCKED: Fix the RED issues below before generating code.
+🚫 BLOCKED: Fix the 🔴 issues below in the `.cypher` files before generating code.
 
 ---
 
 ## [A] Existence Checks
-| UI Action | Expected Backend Function | Status |
+| UI Source → Action (`targetFunction`/`targetStep`) | Expected Backend Node | Status |
 |---|---|---|
-| `loginIsland → submitLogin` | `(:Function { id: "signInWithGoogle" })` | 🟢 OK |
-| `AdminPanel → deleteProduct` | `(:Function { id: "deleteProduct" })` | 🔴 MISSING |
 
 ## [B] Role Parity Checks
-| UI Node | UI requiredRole | Backend Function | Backend roles | Status |
+| UI Source → Action | Effective UI Role | Backend Function | Backend roles | Status |
 |---|---|---|---|---|
-| `AdminDashboardPage` | ADMIN | `getProducts` | PUBLIC | 🟡 Over-restricted (UX issue) |
-| `CommentForm` | PUBLIC | `postComment` | AUTHENTICATED | 🔴 Security Hole! |
 
 ## [C] Input Contract Checks
 | UI Action | UI sends | Backend expects | Status |
 |---|---|---|---|
-| `submitLogin` | `email, password` | `email: string, password: string` | 🟢 OK |
 
 ## [D] Orphan Backend Functions
 | Function | roles | Note |
 |---|---|---|
-| `clearCache` | ADMIN | 🟡 No UI element calls this function. |
+
+## [E] Schema & Hygiene Findings
+| File | Line/Node | Issue | Severity |
+|---|---|---|---|
 
 ---
 ▶️  Fix all 🔴 issues in the Graph files, then re-run /verify-graph-alignment.

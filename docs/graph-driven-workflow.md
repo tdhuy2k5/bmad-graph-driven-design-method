@@ -1,5 +1,10 @@
 # Quy trình Phát triển Graph-Driven (Greenfield)
-> Từ Ý tưởng → Code chạy được. Áp dụng cho mọi project mới.
+> Từ Ý tưởng → Code chạy được. Template chuẩn dùng chung cho mọi project mới.
+
+## Khởi tạo nhanh cho Project mới
+1. Đổi `project_name` và `user_name` trong `_bmad/bmm/config.yaml`, `_bmad/core/config.yaml` (hoặc override trong `_bmad/custom/config.toml`).
+2. Các skill trong `.agent/skills/` (bản sao phẳng nằm ở `custom-skill/`) tự động kích hoạt theo từng Phase.
+3. Kỷ luật code (`Reuse-first`, `Surgical Changes`, `Never Cut`, `Verify + 1 Test`) được đặt sẵn tại `src/AGENTS.md` để áp dụng tự động cho Phase 4–6 mà không làm nhiễu Phase -1 → 3.
 
 ---
 
@@ -158,7 +163,7 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 | 🤖 | Sinh `ARCHITECTURE-SPINE.md` với ERD (Mermaid), ADR và Security Model |
 | 👤 | **Review kỹ phần Constraints — đây là "Luật Pháp" của toàn dự án** |
 
-**Output:** `_bmad-output/planning-artifacts/architecture/ARCHITECTURE-SPINE.md`
+**Output:** `_bmad-output/planning-artifacts/architecture/<spine-name>/ARCHITECTURE-SPINE.md`
 
 > 📝 `custom-agent-architect` KHÔNG tự đặt URL hay tên trang cụ thể — đó là việc của UI/UX ở Phase sau. Kiến trúc chỉ định nghĩa "Vật lý" (State management, Rendering strategy, Security rules).
 
@@ -257,6 +262,17 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 
 ✅ **CHECKPOINT 2 — Quan trọng nhất:** Đây là "Hợp đồng bất biến" giữa Frontend và Backend. Sau bước này, **mọi thay đổi yêu cầu (FR mới) phải cập nhật Graph trước, rồi chạy lại Verify, rồi mới chạm vào code.**
 
+### Bước 3.2 — Sinh API Contracts (Tùy chọn / Khuyên dùng)
+💬 **Mở chat mới** | Lệnh: `/generate-api-contracts`
+
+| Ai làm | Việc phải làm |
+|---|---|
+| 🤖 | Đọc cả `backend-graph.cypher` và `graph-master.cypher` + `ARCHITECTURE-SPINE.md` |
+| 🤖 | Xuất `docs/api-contracts.md` làm nguồn sự thật duy nhất cho Request/Response/Roles |
+| 👤 | Review nhanh payload, roles và error schema trước khi sinh code |
+
+**Output:** `docs/api-contracts.md`
+
 ---
 
 ## PHASE 4 — Backend Code Generation
@@ -319,7 +335,7 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 | 🤖 | Sinh prompt tối ưu cho Stitch MCP (có đầy đủ hierarchy, states, edge cases) |
 | 👤 | **Review prompt: Có đủ thông tin về màu sắc, typography, layout, animation không?** |
 
-**Output:** `implementation-artifacts/stitch-prompts/[screen-name].md`
+**Output:** `implementation-artifacts/stitch-prompts/screens/[screen-name].md`
 
 ---
 
@@ -330,10 +346,10 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 
 | Ai làm | Việc phải làm |
 |---|---|
-| 👤 | Đưa prompt từ `stitch-prompts/*.md` vào Stitch |
+| 👤 | Đưa prompt từ `stitch-prompts/screens/*.md` vào Stitch |
 | 🤖 | Stitch sinh ra HTML/CSS hoàn chỉnh |
 | 👤 | **Mở preview trong browser. Nếu design chưa đạt: chỉnh prompt và gọi lại** |
-| 👤 | Khi hài lòng: lưu HTML vào `implementation-artifacts/html-screens/[screen].html` |
+| 👤 | Khi hài lòng: lưu HTML vào `ui-screens/[ScreenName].html` |
 
 > ⚠️ Đây là điểm **duy nhất** bạn nên dừng để đánh giá thẩm mỹ. Sau bước này, AI coi HTML là "source of truth" để cắt Component — không tự thêm màu sắc hay animation.
 
@@ -341,13 +357,13 @@ Dù đạt 8.5/10 điểm hoàn thiện, hệ thống này vẫn còn một số
 Chú ý khi dùng stitch MCP phải lấy về đúng project bạn đang làm để các skill sau đó có đúng nội dung để chạy, và hãy xem hướng dẫn kết nối stitch MCP vào agent của bạn tùy vào công cụ bạn dùng, và kiểm tra thử nội dung xem kết nối thành công chưa, hãy dùng trang web stitch để xem sau khi promt UI đã phù hợp ý bạn chưa để có cách xử lý phù hợp
 
 ### Bước 5.4 — Extract Components 🔁
-💬 **Mở chat mới** | Lệnh: `/extract-modules`
+💬 **Mở chat mới** | Lệnh: `/extract-modules` *(alias: `/auto-extract`)*
 
 🔁 **Lặp lại cho từng màn hình:**
 
 | Ai làm | Việc phải làm |
 |---|---|
-| 🤖 | Đọc file HTML từ `html-screens/` |
+| 🤖 | Đọc file HTML từ `ui-screens/` (hoặc `implementation-artifacts/html-screens/` / Stitch MCP) |
 | 🤖 | Phân tích DOM, xác định ranh giới Component |
 | 🤖 | Sinh ra `*.tsx` (vỏ rỗng, chỉ có HTML/CSS, chưa có logic) |
 | 👤 | **Review: Tên Component có khớp với `graph-master.cypher` không?** |
@@ -425,11 +441,12 @@ Chú ý khi dùng stitch MCP phải lấy về đúng project bạn đang làm �
 | 0.4 Epics | `bmad-create-epics-and-stories` | ❌ | Review Story list | `epics_logic.md` |
 | 1 Backend Graph | `/generate-backend-graph` | 🔁 × N epics | Review `roles` & nodes | `backend-graph.cypher` |
 | 2 Frontend Graph | `/generate-graph target=...` | 🔁 × N modules | Review role parity | `graph-master.cypher` |
-| 3 Validation | `/verify-graph-alignment` | 🔁 đến khi 🟢 | Sửa lỗi 🔴 trong Graph | Readiness Report |
-| 4 Backend Code | `/build-backend-core` | 🔁 × N functions | Review logic + edge case | `src/services/*.ts` |
-| 5.1 UX Specs | `/design-screen-specs` | 🔁 × N modules | Review hierarchy & states | `ux-specs/*.md` |
-| 5.2 Stitch Prompts | `/generate-stitch-prompts` | 🔁 × N screens | Review prompt | `stitch-prompts/*.md` |
-| 5.3 Stitch UI | Stitch MCP | 🔁 × N screens | **Duyệt design bằng mắt** | `html-screens/*.html` |
+| 3.1 Validation | `/verify-graph-alignment` | 🔁 đến khi 🟢 | Sửa lỗi 🔴 trong Graph | Readiness Report |
+| 3.2 API Contracts | `/generate-api-contracts` | ❌ | Review payload & roles | `docs/api-contracts.md` |
+| 4 Backend Code | `/build-backend-core` | 🔁 × N services | Review logic + edge case | `src/services/*.ts` (hoặc theo Zoning Laws) |
+| 5.1 UX Specs | `/design-screen-specs` | 🔁 × N screens | Review hierarchy & states | `ux-specs/specs-*.md` |
+| 5.2 Stitch Prompts | `/generate-stitch-prompts` | 🔁 × N screens | Review prompt | `stitch-prompts/screens/*.md` |
+| 5.3 Stitch UI | Stitch MCP | 🔁 × N screens | **Duyệt design bằng mắt** | `ui-screens/*.html` |
 | 5.4 Extract | `/extract-modules` | 🔁 × N screens | Review tên Component | `components/*.tsx` |
 | 5.5 Assemble | `/assemble-pages` | 🔁 × N pages | Kiểm tra render browser | `app/**/page.tsx` |
 | 6.1 Inject Logic | `/inject-logic` | 🔁 × N features | **Test tay từng luồng** | Component đã có logic |

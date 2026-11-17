@@ -1,8 +1,12 @@
-demo-app/
 node_modules/
+.next/
+dist/
+build/
+.env
+.env.*
+!.env.example
 *.log
 .DS_Store
 Thumbs.db
-
-bmad\bmm\2-plan-workflows\bmad-agent-pm\customize.toml
-\_bmad\*
+demo-app/
+_bmad/custom/config.user.toml

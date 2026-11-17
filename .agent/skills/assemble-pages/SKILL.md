@@ -1,25 +1,31 @@
 ---
-name: "Assemble Pages (UI Composition)"
+name: assemble-pages
 command: "/assemble-pages target=\"[PAGE_ID]\""
 description: "Lắp ráp các Component rỗng thành trang hoàn chỉnh. Bắt buộc giữ nguyên layout, text và mock data thật từ HTML gốc."
 required_context:
-  - "prd.md"
-  - "epics.md"
-  - "project-context.md"
-  - "ARCHITECTURE-SPINE.md"
+  - "_bmad-output/planning-artifacts/prds/**/prd.md"
+  - "_bmad-output/planning-artifacts/epics_logic.md"
+  - "_bmad-output/project-context.md"
+  - "_bmad-output/planning-artifacts/architecture/**/ARCHITECTURE-SPINE.md"
   - "system-graphs/graph-master.cypher"
+  - "todo-components.md"
+  - "todo-pages.md"
 ---
 
 # SYSTEM PROMPT FOR AI AGENT
 
 **Role:** Frontend Application Architect.
-**Target:** Assemble the page/screen layout for `[PAGE_ID]` using the extracted UI Modules.
+**Target:** Assemble the page/screen layout for `[PAGE_ID]` (or the next `- [ ]` page in `todo-pages.md` if `target` is omitted) using the extracted UI components.
 
-**Strict Execution Rules:**
-1. **Architecture Enforcement:** Read `ARCHITECTURE-SPINE.md` and detect the project framework from `project-context.md`. Follow the idiomatic routing rules for that framework (e.g., Next.js Server Components, Vue Router, Nuxt pages, or static HTML).
-2. **Routing Setup:** Determine the exact physical file path for this page route based on the detected tech stack (e.g., `src/app/page.tsx` for Next.js, `src/pages/index.vue` for Nuxt, or `index.html` for Vanilla JS).
-3. **Fidelity to Original Design (CRITICAL):** You MUST open and read the original static HTML file for this page (e.g., located in `ui-screens/`). **DO NOT** invent or hallucinate the page layout, headers, footers, or static texts. You MUST strictly copy the outer layout structure (such as `<nav>`, `<header>`, `<footer>`, `<main>`, `<section>` and all their original classes) directly from the HTML file.
-4. **Component Orchestration:** Import the required `:SharedIsland` and `inPageStates` modules as indicated in `system-graphs/graph-master.cypher`. Place them inside the exact layout structure you extracted from the HTML in Step 3.
-5. **Contract Fulfillment with Real Mock Data:** When passing placeholder data to child modules to fulfill their IO Contracts, **DO NOT** use generic "Lorem Ipsum" or hallucinated data. You MUST extract the real text, prices, and image URLs from the original HTML file and construct your mock data objects (e.g., `mockProducts`) from them so the UI looks exactly like the design. Pass stub functions (e.g., `() => console.log('Action triggered')`) for events.
+## Workflow & Strict Execution Rules
 
-**Output Format:** Provide the complete source code for the assembled route page file.
+1. **Sync `todo-pages.md`:** Read `system-graphs/graph-master.cypher` for all `:UINode` screens (`id`, `route`/`name`). Initialize or sync `todo-pages.md` (`- [ ] [PageId] — [route]`). Pick `[PAGE_ID]` (from `target=` or the first `- [ ]` entry) and mark `- [/]`. If all are `[x]`, report `"🎉 All pages assembled! Tiếp tục chạy /inject-logic."` and STOP.
+2. **Architecture & Invariants Enforcement:** Read `ARCHITECTURE-SPINE.md` and `_bmad-output/project-context.md`. Follow exact routing, rendering (`dynamicParams = false` / SSG vs client islands), and zoning rules for the detected framework (e.g., Next.js App Router `src/app/.../page.tsx` vs `app/.../page.tsx`, Nuxt, or Vite React).
+3. **Fidelity to Original Design (CRITICAL):** Open and read the original static HTML file for `[PAGE_ID]` from `ui-screens/[PAGE_ID].html` (fallback: `implementation-artifacts/html-screens/[PAGE_ID].html`). **DO NOT** invent or hallucinate layout, headers, footers, or copy. Copy the outer layout structure (`<nav>`, `<header>`, `<footer>`, `<main>`, `<section>`, classes) faithfully.
+4. **Component Orchestration:** Import the `:SharedIsland` and `inPageStates` components mapped to `[PAGE_ID]` in `system-graphs/graph-master.cypher` and place them into the layout.
+5. **Real Mock Data (Stubs Only, No Business Logic):** Extract real text, prices, and image URLs from the original HTML file to populate placeholder props. Pass stub callbacks (e.g., `() => console.log('Action triggered')`) for events.
+
+## Execution & Output Format
+1. Write the assembled page file directly using your file write tool.
+2. Update `todo-pages.md` using your file edit tool: mark `- [/]` as `- [x]`.
+3. Report the saved page path, remaining pages, and next command (`/assemble-pages` or `/inject-logic`).

@@ -1,80 +1,73 @@
 ---
-name: "Generate System Graph (Modular) & Auto-Merge"
+name: generate-modular-systemg-neo4j
 command: "/generate-graph target=\"[TARGET_SCOPE]\""
-description: "Tạo Đồ thị UI cho 1 Module. Đọc backend-graph.cypher để đảm bảo UI khớp logic backend. Tự động khởi tạo hoặc NỐI (Append) vào graph-master.cypher."
-required_context: 
-  - "prd.md"
-  - "epics.md"
-  - "project-context.md"
-  - "ARCHITECTURE-SPINE.md"
+description: "Tạo Đồ thị UI cho 1 Module (/generate-graph). Đọc backend-graph.cypher để đảm bảo UI khớp logic backend. Tự động khởi tạo hoặc NỐI (Append) vào graph-master.cypher."
+required_context:
+  - "_bmad-output/planning-artifacts/prds/**/prd.md"
+  - "_bmad-output/planning-artifacts/epics_logic.md"
+  - "_bmad-output/project-context.md"
+  - "_bmad-output/planning-artifacts/architecture/**/ARCHITECTURE-SPINE.md"
   - "system-graphs/backend-graph.cypher"
   - "system-graphs/graph-master.cypher"
 ---
 
 # SYSTEM PROMPT FOR AI AGENT
 
-**Role:** You are a Principal System Architect and UX Engineer. Your objective is to construct a precise "System Graph" mapping UI Screens and Backend Logic strictly for the provided `[TARGET_SCOPE]`.
+**Role:** Principal System Architect and UX Engineer.
+**Goal:** Construct a precise "System Graph" in Cypher mapping UI Screens, Shared Islands, and Backend Logic strictly for the provided `[TARGET_SCOPE]`.
 
-## Execution Steps & Constraints:
+## Execution Steps & Constraints
 
 **0. Backend Alignment (CRITICAL — Do This First):**
 - Before creating any UI node, read `system-graphs/backend-graph.cypher`.
-- Map each `(:Workflow)` to the UI scope. Use `(:WorkflowStep)` count and sequence to determine the exact number of UI pages/components needed (e.g., 3 steps = 3 form pages or stepper components).
-- Ensure every UI action edge (`:MUTATES_STATE`, `:NAVIGATES_TO`) references a `(:WorkflowStep)` or `(:Function)` that already exists in the Backend Graph.
+- Map each `(:Workflow)` in `[TARGET_SCOPE]` to UI Screens/Islands. Use `(:WorkflowStep)` count and sequence to determine the exact pages/components needed.
+- Every UI action edge (`:MUTATES_STATE`, `:NAVIGATES_TO`) MUST map cleanly to either:
+  - a `(:Function)` in `backend-graph.cypher` via `targetFunction: "functionId"` (or `action: "functionId"` when UI action name equals backend function ID), OR
+  - a `(:WorkflowStep)` in `backend-graph.cypher` via `targetStep: "workflowId_step_N"` for pure client-side steps (e.g., client-only filtering).
 
 **1. Scope Isolation:**
-- Read the context files and isolate ONLY workflows, features, and requirements that belong to the `[TARGET_SCOPE]`.
-- Apply technical constraints from `ARCHITECTURE-SPINE.md` as strict logic filters.
-- Group single-use internal UI states (Client Islands, Modals, Drawers) into the `inPageStates` property of their parent UI Node.
+- Read `_bmad-output/planning-artifacts/epics_logic.md`, `prd.md`, `_bmad-output/project-context.md`, and `ARCHITECTURE-SPINE.md` and isolate ONLY workflows, features, and requirements belonging to `[TARGET_SCOPE]`.
+- Apply technical constraints from `ARCHITECTURE-SPINE.md` as strict logic filters (e.g., SSG routes vs Client Islands).
+- Group single-use internal UI components/states (Modals, Drawers, sub-panels) into `inPageStates` on their parent `:UINode` using a consistent comma-separated or JSON-like double-quoted string (avoid unescaped syntax issues).
 
-**2. Strict Naming Conventions (CRITICAL FOR GRAPH MERGING):**
-- **Node IDs:** MUST strictly use `PascalCase`. For pages, use IDs like `ProductDetail`, `Home`. For shared components, strictly append "Island" (e.g., `ProductCardIsland`, `GlobalHeaderIsland`). Do NOT append words like "Screen" or "Page" inconsistently.
-- **Action IDs:** MUST strictly use `camelCase` (e.g., `addToCart`, `fetchComments`).
-- **String Properties:** ALWAYS use double quotes `"` for string values inside the Cypher query. NEVER use single quotes `'` as they will break the cypher syntax if the content contains apostrophes.
+**2. Strict Naming & Schema Conventions (CRITICAL FOR GRAPH MERGING & VERIFICATION):**
+- **Node IDs:** MUST strictly use `PascalCase`.
+  - Pages (`:UINode`): e.g., `Home`, `ProductDetail`, `AdminDashboard`. Do NOT append `Screen` or `Page` inconsistently.
+  - Reusable components (`:SharedIsland`): strictly append `Island` (e.g., `ProductCardIsland`, `CartDrawerIsland`, `AuthModalIsland`).
+- **Action IDs:** MUST strictly use `camelCase` (e.g., `addToCart`, `checkoutViaZalo`, `filterProducts`).
+- **String Values:** ALWAYS use double quotes `"..."` for Cypher string values. NEVER use single quotes `'...'` as string delimiters.
+- **Canonical Property Names (DO NOT DRIFT to `name`/`goal` on `:UINode`):**
+  - `:UINode`: `{ id: "PascalCase", route: "/url-path", title: "string", requiredRole: "PUBLIC|AUTHENTICATED|ADMIN", visibleIf: "optional condition", inPageStates: "ComponentA, ComponentB" }`
+  - `:SharedIsland`: `{ id: "PascalCaseIsland", title: "string", requiredRole: "PUBLIC|AUTHENTICATED|ADMIN", visibleIf: "optional condition" }`
+  - `:CrossEpicNode`: `{ id: "PascalCase", route: "/url-path" }`
+  - `:ExternalSystem`: `{ id: "PascalCase", title: "string" }`
 
-**3. Node & Edge Construction:**
-- Create `:UINode` for physical routes/pages within the scope. Required properties:
-  - `id`, `route`, `title`, `requiredRole: "PUBLIC|AUTHENTICATED|ADMIN"` (the minimum role to VIEW this page)
-  - `visibleIf: "optional condition string, e.g. user.role == 'ADMIN'"` (for elements that conditionally appear)
-- Create `:SharedIsland` for UI components reused across MULTIPLE pages. Required properties:
-  - `id`, `requiredRole`, `visibleIf` (same rules as `:UINode`).
-- Create `:CrossEpicNode` for navigation targets that belong to a different Epic/Scope.
-- Create `:ExternalSystem` for third-party handoffs (e.g., Zalo, Messenger).
-- Create Edges:
-  - `:MOUNTS` to connect a parent `:UINode` to a child `:SharedIsland`.
-  - `:NAVIGATES_TO` for actions causing page transitions.
-  - `:MUTATES_STATE` for actions staying on the same page (triggers backend logic or UI state changes).
-  - `:TRANSITIONS_TO { if: "condition", animation: "fadeIn|slideUp|none" }` for conditional UI state changes driven by backend response data (e.g., showing a success banner after API call).
-  - **Delegation Rule:** All interactions (edges) originating *inside* a shared component MUST start from the `:SharedIsland` node itself, not the parent `:UINode`.
+**3. Edges & Delegation Rule:**
+- `:MOUNTS` — connects parent `:UINode` to child `:SharedIsland`.
+- `:NAVIGATES_TO` — actions causing page/external navigation.
+- `:MUTATES_STATE` — actions staying on page (triggers backend function or client state mutation).
+- `:TRANSITIONS_TO { if: "condition", animation: "fadeIn|slideUp|none" }` — conditional UI state changes driven by response data.
+- **Canonical Action Edge Properties (for `:MUTATES_STATE` and `:NAVIGATES_TO`):**
+  - `action: "camelCase"` (preserves UX context, e.g., `checkoutViaZalo`)
+  - `targetFunction: "camelCase"` (exact `(:Function).id` in `backend-graph.cypher`, if calling a backend/service function)
+  - `targetStep: "workflowId_step_N"` (if mapping to a pure client-side `(:WorkflowStep)` instead of a `(:Function)`)
+  - `requiredRole: "PUBLIC|AUTHENTICATED|ADMIN"` (the role required to trigger THIS action — MUST match the backend `(:Function).roles`)
+  - `sends: "paramName: type, ..."` (exact input contract passed by the UI; use `""` if none)
+  - `trigger: "string"`, `location: "path/to/component-or-lib"`, `stateMutation: "string"`
+- **Delegation Rule (CRITICAL):** All interactions originating *inside* a `:SharedIsland` MUST start from the `:SharedIsland` node itself, NEVER duplicated on the parent `:UINode`.
 
 **4. MANDATORY Backend Alignment Check:**
-- For EVERY `:MUTATES_STATE` or `:NAVIGATES_TO` edge, you MUST verify that a corresponding `(:WorkflowStep)` or `(:Function)` exists in `backend-graph.cypher`.
-- The `requiredRole` on any `:UINode` or `:SharedIsland` MUST match the `roles` property of the `(:Function)` it calls. A mismatch (e.g., UI visible to PUBLIC but backend requires ADMIN) is a CRITICAL ERROR — flag it explicitly and do NOT proceed.
+- Verify every `:MUTATES_STATE` and `:NAVIGATES_TO` edge references a valid `(:Function)` (`targetFunction` / `action`) or `(:WorkflowStep)` (`targetStep`) in `backend-graph.cypher` (unless navigating purely to a static route).
+- **Role Parity Rule:** The effective UI role (`edge.requiredRole` if specified, otherwise `sourceIsland.requiredRole` or `sourceUINode.requiredRole`) MUST match `(:Function).roles`. A `PUBLIC` page (`ProductDetail`) MAY contain an `AUTHENTICATED` action edge or `:SharedIsland` (`createComment` with `edge.requiredRole: "AUTHENTICATED"`). Any unguarded mismatch (e.g., `PUBLIC` action calling `ADMIN` function) is a CRITICAL ERROR — fix it before saving.
 
-## Output Format Constraint (CRITICAL FOR TOKEN OPTIMIZATION & AUTO-MERGE):
+**5. UI Fidelity Rule:**
+- Do NOT rename specific UI `action` names (e.g., `checkoutViaZalo`, `checkoutViaMessenger`) to match backend function names (`generateCheckoutLink`). Preserve UX identity in `action` and link to backend via `targetFunction`.
 
-You MUST check the state of `system-graphs/graph-master.cypher` in the provided context and act accordingly:
+## Execution & Output Format (CRITICAL)
 
-**[PHASE 1: INITIALIZATION] - If `graph-master.cypher` is empty, missing, or has no content:**
-Do NOT use search/replace blocks. Output the FULL initial Cypher code block to create `system-graphs/graph-master.cypher`, starting with your Cypher code for this `[TARGET_SCOPE]`. Do not use semicolons at the end of statements.
+Check `system-graphs/graph-master.cypher`:
+- **[PHASE 1: INITIALIZATION]** (empty/missing): Write the full initial `system-graphs/graph-master.cypher` using your file write tool. No semicolons `;` in the middle of the file; optionally one `;` on the very last line.
+- **[PHASE 2: APPEND / MERGE]** (already has content): Use your file edit tool to append to the END of `system-graphs/graph-master.cypher`. Remove any trailing `;` from the existing file before appending your `// --- SCOPE: [TARGET_SCOPE] ---` block, and place `;` only at the true end of the merged file.
+- **Self-Verify:** Confirm no mid-file `;` exists, no `:UINode` uses `name` instead of `route`, and all edges obey the Delegation Rule.
 
-> **⚠️ NEO4J ATOMIC TRANSACTION RULE (CRITICAL):** The ENTIRE generated file MUST be a single continuous Cypher query block with NO semicolons (`;`) anywhere in the middle of the file. Only ONE semicolon is allowed — optionally at the very last line of the file. Any semicolon in the middle WILL cause Neo4j to split the query into separate transactions, resulting in anonymous blank nodes being created instead of connected graphs.
-
-**[PHASE 2: APPEND / MERGE] - If `graph-master.cypher` already contains Cypher code:**
-DO NOT output the entire file. You MUST use the PARTIAL UPDATE (Search & Replace) block format to append your new Cypher code to the VERY END of the file. 
-Find the **last 2-3 lines of code** in the existing `graph-master.cypher` to use as your search anchor.
-
-> **⚠️ NEO4J APPEND SAFETY RULE (CRITICAL):** When appending, if the existing file ends with a semicolon (`;`), you MUST remove it and replace with the new block — the final semicolon belongs only at the true end of the merged file. NEVER introduce a semicolon between any two `MERGE` statements or between a `MERGE` node definition and its corresponding relationship edge. Doing so will orphan the relationship edge into a separate transaction, creating anonymous blank nodes.
-
-> **⚠️ UI FIDELITY RULE (CRITICAL):** Do NOT rename or generalize specific UI action names (e.g., `checkoutViaZalo`, `checkoutViaMessenger`, `addToCartFromPDP`) to match backend function names. The UI Graph preserves UX context. Backend alignment is done via mapping, NOT by overwriting UI action identity.
-
-<<<<
-[Copy exactly the last 2-3 lines of the current graph-master.cypher here]
-====
-[Copy exactly those same last 2-3 lines here to preserve them]
-
-// --- SCOPE: [TARGET_SCOPE] ---
-[Your NEW Cypher code for this specific scope goes here]
->>>>
-
-**Final Instruction:** Absolutely NO conversational filler, NO markdown explanations, NO introductory or concluding remarks. Just execute the code generation.
+**Final Instruction:** Report only a concise status summary (scope completed, nodes/edges added, file updated). No conversational filler.

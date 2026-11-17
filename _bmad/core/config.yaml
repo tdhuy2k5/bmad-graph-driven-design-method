@@ -3,8 +3,8 @@
 # Version: 6.10.0
 # Date: 2026-07-22T15:29:20.783Z
 
-project_name: TruongAnCao
+project_name: MyProject
 document_output_language: English
 output_folder: "{project-root}/_bmad-output"
-user_name: tacadmin
+user_name: Developer
 communication_language: English

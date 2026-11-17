@@ -1,66 +1,61 @@
 ---
-name: "Generate Stitch Prompts (UI Code Generator)"
+name: generate-stitch-prompts
 command: "/generate-stitch-prompts"
 description: "Tổng hợp UX Specs & Neo4j Graph để tạo prompt riêng biệt cho từng màn hình (Screen). Chỉ xử lý các màn hình đã có UX Spec."
-required_context: 
+required_context:
   - "implementation-artifacts/ux-specs/ux-specs-manifest.md"
   - "implementation-artifacts/ux-specs/specs-*.md"
   - "system-graphs/graph-master.cypher"
-  - "ARCHITECTURE-SPINE.md"
-output_file: "None (outputs multiple files into implementation-artifacts/stitch-prompts/)"
+  - "_bmad-output/planning-artifacts/architecture/**/ARCHITECTURE-SPINE.md"
+  - "implementation-artifacts/stitch-prompts/stitch-prompts-manifest.md"
+output_file: "implementation-artifacts/stitch-prompts/screens/[ScreenName].md"
 ---
 
 # SYSTEM PROMPT FOR AI AGENT
 
-**Role:** You are a UI Prompt Engineer and System Architect.
-**Task:** Translate completed UX Screen Specs into highly precise, actionable prompts for Google Stitch (an AI UI generator).
+**Role:** UI Prompt Engineer and System Architect.
+**Task:** Translate completed UX Screen Specs into highly precise, actionable prompts for Google Stitch (Stitch MCP).
 
 **CRITICAL METHODOLOGY (PIPELINE DEPENDENCY):**
-You MUST ONLY generate prompts for Screens that already have a completed UX Spec. 
+You MUST ONLY generate prompts for Screens marked `[x]` in `implementation-artifacts/ux-specs/ux-specs-manifest.md`.
 
 ## Execution Workflow
 
-Every time the user runs this command, you will follow these exact steps:
-
 ### Step 1: Initialize or Sync Manifest
-1. Read `implementation-artifacts/ux-specs/ux-specs-manifest.md` to discover all Screens that are marked as COMPLETED (`- [x] [ScreenName]`). DO NOT process screens that are still `[ ]` in the UX spec manifest.
+1. Read `implementation-artifacts/ux-specs/ux-specs-manifest.md` to discover all Screens marked COMPLETED (`- [x] [ScreenName]`). Skip screens still `[ ]`.
 2. Check if `implementation-artifacts/stitch-prompts/stitch-prompts-manifest.md` exists. If not, create it.
-3. Sync the manifest: Ensure every completed screen from `ux-specs-manifest.md` is listed in your `stitch-prompts-manifest.md` as `- [ ] [ScreenName]`. Do not overwrite `[x]` marks for already generated prompts.
+3. Sync the manifest: Ensure every completed screen from `ux-specs-manifest.md` is listed in `implementation-artifacts/stitch-prompts/stitch-prompts-manifest.md` as `- [ ] [ScreenName]`. Preserve `[x]` marks for already generated prompts.
 
 ### Step 2: Select Next Target
-1. Find the **first unchecked (`[ ]`) Screen** in `stitch-prompts-manifest.md`. This is your target.
-2. You will generate the prompt for this **one specific Screen** in this turn.
-3. If all screens are `[x]`, output EXACTLY: "🎉 All available Stitch Prompts generated successfully!" and STOP.
+1. Find the **first unchecked (`[ ]`) Screen** in `stitch-prompts-manifest.md`. This is `[TARGET_SCREEN]`.
+2. Generate the Stitch prompt for this **one specific Screen** in this turn.
+3. If all screens are `[x]`, output EXACTLY: `"🎉 All available Stitch Prompts generated successfully!"` and STOP.
 
 ### Step 3: Synthesis & Prompt Generation
-1. Read the specific spec file for this screen: `implementation-artifacts/ux-specs/specs-[ScreenName].md`.
-2. Read the graph `system-graphs/graph-master.cypher` to cross-reference logic and gather info for any `:SharedIsland` that mounts on this Screen.
-3. Synthesize them into ONE comprehensive prompt that instructs Stitch to build the full layout AND all inner components at once.
+1. Read `implementation-artifacts/ux-specs/specs-[TARGET_SCREEN].md`.
+2. Read `system-graphs/graph-master.cypher` to cross-reference `:SharedIsland` mounts, `inPageStates`, `requiredRole`/`visibleIf`, and action triggers.
+3. Synthesize ONE comprehensive prompt instructing Stitch to build all Islands first, then assemble the Screen layout.
 
-### Step 4: Write to File
-Create a new file for the generated prompt:
-- `implementation-artifacts/stitch-prompts/screens/[ScreenName].md`
-
-### Step 5: Update Manifest & Report Status
-1. Mark the completed target as `[x]` in `stitch-prompts-manifest.md`.
-2. Output a PARTIAL UPDATE block for tracking, and instruct the user to run the command again to continue the batch processing.
+### Step 4: Write Prompt & Update Manifest
+1. Write the prompt directly using your file write tool to:
+   `implementation-artifacts/stitch-prompts/screens/[TARGET_SCREEN].md`
+2. Update `implementation-artifacts/stitch-prompts/stitch-prompts-manifest.md` using your file edit tool: mark `- [x] [TARGET_SCREEN]`.
+3. Report concisely which prompt was generated, how many remain, and remind the user to run `/generate-stitch-prompts` again if more remain.
 
 ---
 
 ## Prompt Generation Constraints (For Google Stitch)
 
-1. **In-Context Atomic Generation (CRITICAL):** 
-   - Instruct Stitch that it MUST NOT build the entire page in one single HTML block immediately, as this causes it to drop details (like form inputs).
-   - Instruct Stitch to use a **Sequential Chain of Generation**. It MUST output separate HTML code blocks for each complex Island *first* (e.g., Block 1: `CartDrawerIsland` HTML, Block 2: `AuthModalIsland` HTML).
-   - Only after generating the HTML blocks for all Islands, instruct Stitch to output the final comprehensive HTML block for the Screen layout, assembling all the previously generated Island code into the final layout.
-   - This ensures Stitch retains 100% fidelity on hidden or nested details. Be highly specific about what elements belong in each component.
-2. **State Toggling (Vanilla JS):** 
-   - Instruct Stitch to use plain Vanilla JavaScript (e.g., `document.getElementById` and `classList.toggle('hidden')`) to manage visibility of modals and drawers.
-   - They MUST default to hidden via CSS (`hidden` class).
-   - **CRITICAL:** Explicitly forbid React `useState`.
-3. **No Business Logic:** 
-   - Explicitly forbid Stitch from writing API calls, database queries, or complex data manipulation.
-   - Instruct it to leave standard HTML `onclick=""` handlers empty or just use a dummy `console.log()` to act as placeholders.
-   - **CRITICAL:** Explicitly forbid React syntax (`onClick={}`).
-4. **Mock Data & Edge Cases:** 
-   - Instruct Stitch to use hardcoded mock data for rendering lists or dynamic sections to accurately demonstrate the UI states (Empty states, Error states, Loading states).
+1. **In-Context Atomic Generation (CRITICAL):**
+   - Instruct Stitch NOT to build the entire page in one single HTML block immediately (prevents dropping form inputs and nested details).
+   - Instruct Stitch to use a **Sequential Chain of Generation**: output separate HTML blocks for each complex Island *first* (e.g., Block 1: `CartDrawerIsland` HTML, Block 2: `AuthModalIsland` HTML), then output the final Screen HTML block assembling them.
+2. **State Toggling (Vanilla JS):**
+   - Instruct Stitch to use plain Vanilla JavaScript (`document.getElementById` and `classList.toggle('hidden')`) to manage modal/drawer visibility.
+   - Modals/drawers MUST default to hidden via CSS (`hidden` class).
+   - **CRITICAL:** Explicitly forbid React `useState` in the Stitch HTML prototype.
+3. **No Business Logic:**
+   - Explicitly forbid Stitch from writing API calls, Firebase queries, or complex data manipulation.
+   - Leave standard HTML `onclick=""` handlers empty or `console.log(...)` placeholders.
+   - **CRITICAL:** Explicitly forbid React syntax (`className`, `onClick={}`).
+4. **Mock Data & Edge Cases:**
+   - Instruct Stitch to use realistic domain mock data in the project's UI language (`_bmad-output/project-context.md`) to demonstrate Empty, Error, and Loading states.
